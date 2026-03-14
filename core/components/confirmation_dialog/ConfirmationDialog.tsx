@@ -21,6 +21,8 @@ export interface ConfirmationDialogProps {
   onCancel?: () => void;
   /** Called when the user clicks the confirm button */
   onConfirm?: () => void;
+  /** Disables the confirm button (e.g. while a mutation is in-flight) */
+  confirmDisabled?: boolean;
   className?: string;
 }
 
@@ -49,6 +51,7 @@ export function ConfirmationDialog({
   confirmLabel = 'Continue',
   onCancel,
   onConfirm,
+  confirmDisabled = false,
   className,
 }: ConfirmationDialogProps) {
   function handleCancel() {
@@ -93,6 +96,7 @@ export function ConfirmationDialog({
               size="lg"
               className="flex-1 rounded-xl"
               onClick={handleConfirm}
+              disabled={confirmDisabled}
             >
               {confirmLabel}
             </Button>
