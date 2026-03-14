@@ -23,22 +23,18 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    // Per-page: export const metadata = { title: 'Dashboard' } → 'Dashboard | Starter Kit'
-    template: '%s | Starter Kit',
-    default: 'Starter Kit',
+    template: '%s | TUG Wellness Admin',
+    default: 'TUG Wellness Admin',
   },
-  description: 'A production-ready Next.js starter kit.',
-  // Replace with your production domain. Set NEXT_PUBLIC_APP_URL in .env.production.
+  description: 'Admin portal for managing TUG Wellness Packages.',
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'),
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    siteName: 'Starter Kit',
-    // title, description, images are inherited from title/description above
+    siteName: 'TUG Wellness Admin',
   },
   twitter: {
     card: 'summary_large_image',
-    // title and description are inherited from above
   },
 };
 
