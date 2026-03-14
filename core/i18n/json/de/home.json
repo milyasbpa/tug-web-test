@@ -1,0 +1,28 @@
+{
+  "guides": {
+    "title": "Erste Schritte mit Video-Guides",
+    "items": {
+      "guide-1": {
+        "category": "Anleitungen",
+        "title": "So erstellst du",
+        "description": "Dein erstes Fotoshooting",
+        "thumbnailAlt": "So erstellst du dein erstes Fotoshooting"
+      },
+      "guide-2": {
+        "category": "Anleitungen",
+        "title": "Die Richtung vorgeben",
+        "description": "für deine Visuals",
+        "thumbnailAlt": "Die Richtung für deine Visuals vorgeben"
+      },
+      "guide-3": {
+        "category": "Anleitungen",
+        "title": "Verbessern und entdecken",
+        "description": "Neue Variationen",
+        "thumbnailAlt": "Verbessere und entdecke neue Variationen"
+      }
+    }
+  },
+  "explore": {
+    "title": "Entdecken"
+  }
+}

@@ -1,0 +1,44 @@
+# Dependencies — reinstalled inside Docker via npm ci
+node_modules
+
+# Next.js build output — rebuilt inside Docker
+.next
+
+# Local env files — secrets must NOT be baked into the image
+.env
+.env.local
+.env.*.local
+
+# Dev tooling — not needed at runtime
+.git
+.gitignore
+.husky
+.storybook
+*.stories.tsx
+*.stories.ts
+
+# Test files
+**/*.test.ts
+**/*.test.tsx
+**/*.spec.ts
+**/*.spec.tsx
+e2e/
+coverage/
+playwright-report/
+test-results/
+
+# IDE & OS
+.DS_Store
+.vscode
+.idea
+*.swp
+*.swo
+
+# Docs
+README.md
+CHANGELOG.md
+*.md
+
+# Logs
+*.log
+npm-debug.log*

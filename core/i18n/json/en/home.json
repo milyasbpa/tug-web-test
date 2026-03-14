@@ -1,0 +1,28 @@
+{
+  "guides": {
+    "title": "Getting started with video guides",
+    "items": {
+      "guide-1": {
+        "category": "Guides",
+        "title": "How to Create",
+        "description": "Your First Photoshoot",
+        "thumbnailAlt": "How to create your first photoshoot"
+      },
+      "guide-2": {
+        "category": "Guides",
+        "title": "Setting the Direction",
+        "description": "for Your Visuals",
+        "thumbnailAlt": "Setting the direction for your visuals"
+      },
+      "guide-3": {
+        "category": "Guides",
+        "title": "Improve and Explore",
+        "description": "New Variations",
+        "thumbnailAlt": "Improve and explore new variations"
+      }
+    }
+  },
+  "explore": {
+    "title": "Explore"
+  }
+}

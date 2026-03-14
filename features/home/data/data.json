@@ -1,0 +1,81 @@
+{
+  "guideCards": [
+    {
+      "id": "guide-1",
+      "thumbnailSrc": "https://picsum.photos/seed/guide1/600/340",
+      "videoSrc": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+    },
+    {
+      "id": "guide-2",
+      "thumbnailSrc": "https://picsum.photos/seed/guide2/600/340",
+      "videoSrc": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
+    },
+    {
+      "id": "guide-3",
+      "thumbnailSrc": "https://picsum.photos/seed/guide3/600/340",
+      "videoSrc": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"
+    }
+  ],
+  "exploreItems": [
+    {
+      "id": "explore-1",
+      "src": "https://picsum.photos/seed/ex1/400/600",
+      "alt": "Product photography - perfume bottle"
+    },
+    {
+      "id": "explore-2",
+      "src": "https://picsum.photos/seed/ex2/400/500",
+      "alt": "Fashion photography - woman in puffer jacket"
+    },
+    {
+      "id": "explore-3",
+      "src": "https://picsum.photos/seed/ex3/400/550",
+      "alt": "Product photography - cologne on rocks"
+    },
+    {
+      "id": "explore-4",
+      "src": "https://picsum.photos/seed/ex4/400/650",
+      "alt": "Fashion photography - woman portrait"
+    },
+    {
+      "id": "explore-5",
+      "src": "https://picsum.photos/seed/ex5/400/500",
+      "alt": "Product photography - dark bottle"
+    },
+    {
+      "id": "explore-6",
+      "src": "https://picsum.photos/seed/ex6/400/480",
+      "alt": "Fashion photography - woman with product"
+    },
+    {
+      "id": "explore-7",
+      "src": "https://picsum.photos/seed/ex7/400/520",
+      "alt": "Product photography - flowers arrangement"
+    },
+    {
+      "id": "explore-8",
+      "src": "https://picsum.photos/seed/ex8/400/600",
+      "alt": "Fashion photography - woman in swimwear"
+    },
+    {
+      "id": "explore-9",
+      "src": "https://picsum.photos/seed/ex9/400/460",
+      "alt": "Product photography - serum bottle"
+    },
+    {
+      "id": "explore-10",
+      "src": "https://picsum.photos/seed/ex10/400/580",
+      "alt": "Beauty photography - woman holding product"
+    },
+    {
+      "id": "explore-11",
+      "src": "https://picsum.photos/seed/ex11/400/540",
+      "alt": "Product photography - vanille antique perfume"
+    },
+    {
+      "id": "explore-12",
+      "src": "https://picsum.photos/seed/ex12/400/500",
+      "alt": "Fashion photography - outdoor portrait"
+    }
+  ]
+}
