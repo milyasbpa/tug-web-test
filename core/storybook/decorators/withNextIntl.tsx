@@ -5,10 +5,12 @@ import React from 'react';
 // Add or remove namespace imports as new namespaces are added to core/i18n/json/.
 import enCommon from '../../i18n/json/en/common.json';
 import enHome from '../../i18n/json/en/home.json';
+import enLogin from '../../i18n/json/en/login.json';
 
 const messages = {
   common: enCommon,
   home: enHome,
+  login: enLogin,
 };
 
 export const withNextIntl: Decorator = (Story) => (

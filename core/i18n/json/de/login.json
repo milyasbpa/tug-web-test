@@ -1,0 +1,15 @@
+{
+  "title": "Anmelden",
+  "subtitle": "Geben Sie Ihre Zugangsdaten ein, um auf das Admin-Portal zuzugreifen",
+  "email": {
+    "label": "E-Mail",
+    "placeholder": "admin@beispiel.com"
+  },
+  "password": {
+    "label": "Passwort",
+    "placeholder": "••••••••"
+  },
+  "submit": "Anmelden",
+  "submitting": "Anmeldung läuft...",
+  "error": "Ungültige E-Mail oder falsches Passwort"
+}

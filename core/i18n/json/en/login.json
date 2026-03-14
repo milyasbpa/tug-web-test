@@ -1,0 +1,15 @@
+{
+  "title": "Sign in",
+  "subtitle": "Enter your credentials to access the admin portal",
+  "email": {
+    "label": "Email",
+    "placeholder": "admin@example.com"
+  },
+  "password": {
+    "label": "Password",
+    "placeholder": "••••••••"
+  },
+  "submit": "Sign in",
+  "submitting": "Signing in...",
+  "error": "Invalid email or password"
+}
