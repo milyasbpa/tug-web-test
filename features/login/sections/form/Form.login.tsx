@@ -30,7 +30,7 @@ export function FormLogin() {
   };
 
   return (
-    <div className="w-full max-w-sm space-y-6">
+    <div className="sm:bg-card w-full max-w-sm space-y-6 sm:rounded-xl sm:border sm:p-8 sm:shadow-sm">
       <div className="space-y-1 text-center">
         <h1 className="text-2xl font-semibold tracking-tight">{t('title')}</h1>
         <p className="text-muted-foreground text-sm">{t('subtitle')}</p>

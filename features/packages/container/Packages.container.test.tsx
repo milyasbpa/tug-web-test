@@ -92,8 +92,8 @@ describe('PackagesContainer (integration)', () => {
   // ── Mount ───────────────────────────────────────────────────────────────────
   it('renders all three sections without error', () => {
     renderContainer();
-    // Table section: package data visible
-    expect(screen.getByText('Deep Tissue Massage')).toBeInTheDocument();
+    // Table section: package data visible in desktop table and/or mobile cards
+    expect(screen.getAllByText('Deep Tissue Massage').length).toBeGreaterThan(0);
     // FormModal + DeleteDialog are mounted but hidden (modalMode null / isDeleteOpen false)
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
@@ -110,7 +110,9 @@ describe('PackagesContainer (integration)', () => {
     await waitFor(() => {
       expect(screen.getByRole('dialog')).toBeInTheDocument();
     });
-    expect(screen.getByText(packagesMessages.editPackage)).toBeInTheDocument();
+    // Scope edit title check to the dialog to avoid matching mobile card buttons
+    const dialog = screen.getByRole('dialog');
+    expect(within(dialog).getByText(packagesMessages.editPackage)).toBeInTheDocument();
     // First package's name should be pre-filled in the form
     expect(screen.getByDisplayValue('Deep Tissue Massage')).toBeInTheDocument();
   });

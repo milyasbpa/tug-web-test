@@ -126,10 +126,10 @@ describe('TablePackages', () => {
       });
       renderTable();
 
-      expect(screen.getByText('No packages yet')).toBeInTheDocument();
+      expect(screen.getAllByText('No packages yet').length).toBeGreaterThan(0);
       expect(
-        screen.getByText('Add your first wellness package to get started.'),
-      ).toBeInTheDocument();
+        screen.getAllByText('Add your first wellness package to get started.').length,
+      ).toBeGreaterThan(0);
     });
   });
 
@@ -143,19 +143,20 @@ describe('TablePackages', () => {
 
     it('renders package names in rows', () => {
       renderTable();
-      expect(screen.getByText('Deep Tissue Massage')).toBeInTheDocument();
-      expect(screen.getByText('Hot Stone Therapy')).toBeInTheDocument();
-      expect(screen.getByText('Aromatherapy Session')).toBeInTheDocument();
+      // Each name appears in both desktop table and mobile cards
+      expect(screen.getAllByText('Deep Tissue Massage').length).toBeGreaterThan(0);
+      expect(screen.getAllByText('Hot Stone Therapy').length).toBeGreaterThan(0);
+      expect(screen.getAllByText('Aromatherapy Session').length).toBeGreaterThan(0);
     });
 
     it('formats price using formatPrice', () => {
       renderTable();
-      expect(screen.getByText('$120.00')).toBeInTheDocument();
+      expect(screen.getAllByText('$120.00').length).toBeGreaterThan(0);
     });
 
     it('formats duration using formatDuration', () => {
       renderTable();
-      expect(screen.getByText('60 min')).toBeInTheDocument();
+      expect(screen.getAllByText('60 min').length).toBeGreaterThan(0);
     });
   });
 
@@ -165,7 +166,8 @@ describe('TablePackages', () => {
       renderTable();
       const user = userEvent.setup();
 
-      await user.click(screen.getByRole('button', { name: /edit deep tissue massage/i }));
+      // Name appears in both desktop table and mobile cards — click the first
+      await user.click(screen.getAllByRole('button', { name: /edit deep tissue massage/i })[0]);
 
       expect(mockOpenEditModal).toHaveBeenCalledOnce();
       expect(mockOpenEditModal).toHaveBeenCalledWith(mockPackages[0]);
@@ -178,7 +180,8 @@ describe('TablePackages', () => {
       renderTable();
       const user = userEvent.setup();
 
-      await user.click(screen.getByRole('button', { name: /delete hot stone therapy/i }));
+      // Name appears in both desktop table and mobile cards — click the first
+      await user.click(screen.getAllByRole('button', { name: /delete hot stone therapy/i })[0]);
 
       expect(mockOpenDeleteDialog).toHaveBeenCalledOnce();
       expect(mockOpenDeleteDialog).toHaveBeenCalledWith(mockPackages[1]);
@@ -208,9 +211,9 @@ describe('TablePackages', () => {
 
       await user.type(screen.getByRole('textbox', { name: /search/i }), 'Hot Stone');
 
-      // After filter: only the matching row + header = 2 rows
+      // After filter: only the matching row + header = 2 rows in the desktop table (mobile cards use divs)
       expect(screen.getAllByRole('row')).toHaveLength(2);
-      expect(screen.getByText('Hot Stone Therapy')).toBeInTheDocument();
+      expect(screen.getAllByText('Hot Stone Therapy').length).toBeGreaterThan(0);
       expect(screen.queryByText('Deep Tissue Massage')).not.toBeInTheDocument();
     });
   });
