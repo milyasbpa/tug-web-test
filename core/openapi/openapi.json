@@ -586,11 +586,13 @@
           },
           "price": {
             "type": "number",
-            "exclusiveMinimum": 0
+            "minimum": 0,
+            "exclusiveMinimum": true
           },
           "durationMinutes": {
             "type": "integer",
-            "exclusiveMinimum": 0,
+            "minimum": 0,
+            "exclusiveMinimum": true,
             "maximum": 9007199254740991
           }
         },
@@ -610,11 +612,13 @@
           },
           "price": {
             "type": "number",
-            "exclusiveMinimum": 0
+            "minimum": 0,
+            "exclusiveMinimum": true
           },
           "durationMinutes": {
             "type": "integer",
-            "exclusiveMinimum": 0,
+            "minimum": 0,
+            "exclusiveMinimum": true,
             "maximum": 9007199254740991
           }
         }
