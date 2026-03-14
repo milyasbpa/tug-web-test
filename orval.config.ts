@@ -2,7 +2,7 @@ import { defineConfig } from 'orval';
 
 export default defineConfig({
   api: {
-    input: './core/openapi/api-docs.json',
+    input: './core/openapi/openapi.json',
     output: {
       mode: 'tags-split', // one file per tag (basicAuth, subscription, etc.)
       target: './core/api/generated',

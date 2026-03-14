@@ -13,7 +13,7 @@
 
 - [x] **3. Create Orval config**
   - Create `orval.config.ts` at root
-  - Point `input` to `core/openapi/api-docs.json`
+  - Point `input` to `core/openapi/openapi.json`
   - Point `output` to `core/api/generated/`
   - Use `react-query` mutator with the custom Axios instance from step 2
   - Generated folder is **gitignored** (same pattern as `core/i18n/json/`)
@@ -22,7 +22,7 @@
   // orval.config.ts
   export default {
     api: {
-      input: './core/openapi/api-docs.json',
+      input: './core/openapi/openapi.json',
       output: {
         mode: 'tags-split', // one file per tag (auth, subscription, etc.)
         target: './core/api/generated',
