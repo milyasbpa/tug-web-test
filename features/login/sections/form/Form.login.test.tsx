@@ -2,9 +2,18 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { NextIntlClientProvider } from 'next-intl';
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import loginMessages from '@/core/i18n/json/en/login.json';
+
+// ── Module mock ───────────────────────────────────────────────────────────────
+// useLogin is mocked so Form.login.tsx can be tested without a real network.
+// vi.hoisted ensures the fn reference is available inside the vi.mock factory.
+const mockMutate = vi.hoisted(() => vi.fn());
+
+vi.mock('@/features/login/react-query/use-login', () => ({
+  useLogin: () => ({ mutate: mockMutate, isPending: false }),
+}));
 
 import { FormLogin } from './Form.login';
 
@@ -89,6 +98,25 @@ describe('FormLogin', () => {
 
       const emailInput = await screen.findByRole('textbox', { name: /email/i });
       expect(emailInput).toHaveAttribute('aria-invalid', 'true');
+    });
+  });
+
+  describe('integration', () => {
+    beforeEach(() => mockMutate.mockReset());
+
+    it('calls mutate with form values on valid submit', async () => {
+      renderFormLogin();
+      const user = userEvent.setup();
+
+      await user.type(screen.getByRole('textbox', { name: /email/i }), 'user@example.com');
+      await user.type(screen.getByLabelText(/password/i), 'password123');
+      await user.click(screen.getByRole('button', { name: /sign in/i }));
+
+      expect(mockMutate).toHaveBeenCalledOnce();
+      expect(mockMutate).toHaveBeenCalledWith({
+        email: 'user@example.com',
+        password: 'password123',
+      });
     });
   });
 });

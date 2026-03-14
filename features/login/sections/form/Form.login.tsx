@@ -8,6 +8,7 @@ import { useForm } from 'react-hook-form';
 import { Button } from '@/core/components/button';
 import { FormField } from '@/core/components/form_field';
 import { Input } from '@/core/components/input';
+import { useLogin } from '@/features/login/react-query/use-login';
 
 import { loginSchema, type LoginFormValues } from './form.login.schema';
 
@@ -17,9 +18,7 @@ import { loginSchema, type LoginFormValues } from './form.login.schema';
 // onSubmit is a placeholder until Step 5 wires useLogin().
 export function FormLogin() {
   const t = useTranslations('login');
-
-  // TODO: Step 5 — replace with const { mutate, isPending } = useLogin()
-  const isPending = false;
+  const { mutate, isPending } = useLogin();
 
   const { control, handleSubmit } = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -27,8 +26,7 @@ export function FormLogin() {
   });
 
   const onSubmit = (values: LoginFormValues) => {
-    // TODO: Step 5 — replace with mutate(values)
-    console.log(values);
+    mutate(values);
   };
 
   return (
