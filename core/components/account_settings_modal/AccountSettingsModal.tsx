@@ -58,7 +58,7 @@ export function AccountSettingsModal({
     firstName: initialValues.firstName ?? '',
     lastName: initialValues.lastName ?? '',
     email: initialValues.email ?? '',
-    avatarUrl: initialValues.avatarUrl,
+    ...(initialValues.avatarUrl !== undefined && { avatarUrl: initialValues.avatarUrl }),
   };
 
   const [values, setValues] = React.useState<AccountSettingsValues>(defaults);
@@ -71,7 +71,7 @@ export function AccountSettingsModal({
         firstName: initialValues.firstName ?? '',
         lastName: initialValues.lastName ?? '',
         email: initialValues.email ?? '',
-        avatarUrl: initialValues.avatarUrl,
+        ...(initialValues.avatarUrl !== undefined && { avatarUrl: initialValues.avatarUrl }),
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
