@@ -1,5 +1,7 @@
 'use client';
 
+import { useEffect, useRef } from 'react';
+
 import type { PackageResponseDto } from '@/core/api/generated/nestjsStarter.schemas';
 import { Button } from '@/core/components/button';
 import { EmptyState } from '@/core/components/empty_state';
@@ -11,6 +13,7 @@ interface Labels {
   delete: string;
   emptyTitle: string;
   emptyDescription: string;
+  loadingMore?: string;
 }
 
 interface Props {
@@ -20,6 +23,10 @@ interface Props {
   onEdit: (pkg: PackageResponseDto) => void;
   onDelete: (pkg: PackageResponseDto) => void;
   labels: Labels;
+  // Infinite scroll
+  onLoadMore?: () => void;
+  hasNextPage?: boolean;
+  isFetchingNextPage?: boolean;
 }
 
 export function PackagesMobileCards({
@@ -29,7 +36,29 @@ export function PackagesMobileCards({
   onEdit,
   onDelete,
   labels,
+  onLoadMore,
+  hasNextPage = false,
+  isFetchingNextPage = false,
 }: Props) {
+  const sentinelRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const sentinel = sentinelRef.current;
+    if (!sentinel || !onLoadMore) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting && hasNextPage && !isFetchingNextPage) {
+          onLoadMore();
+        }
+      },
+      { threshold: 0.1 },
+    );
+
+    observer.observe(sentinel);
+    return () => observer.disconnect();
+  }, [onLoadMore, hasNextPage, isFetchingNextPage]);
+
   return (
     <div className="flex flex-col gap-3 md:hidden">
       {isLoading ? (
@@ -43,39 +72,53 @@ export function PackagesMobileCards({
       ) : packages.length === 0 ? (
         <EmptyState title={labels.emptyTitle} description={labels.emptyDescription} />
       ) : (
-        packages.map((pkg) => (
-          <div key={pkg.id} className="space-y-2 rounded-lg border p-4">
-            <p className="font-semibold">{pkg.name}</p>
-            <p className="text-muted-foreground line-clamp-2 text-sm">{pkg.description}</p>
-            <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm">
-              <span>{formatPrice(pkg.price)}</span>
-              <span>{formatDuration(pkg.durationMinutes)}</span>
-              <span className="text-muted-foreground">
-                {new Intl.DateTimeFormat('en-US', { dateStyle: 'medium' }).format(
-                  new Date(pkg.createdAt),
-                )}
-              </span>
+        <>
+          {packages.map((pkg) => (
+            <div key={pkg.id} className="space-y-2 rounded-lg border p-4">
+              <p className="font-semibold">{pkg.name}</p>
+              <p className="text-muted-foreground line-clamp-2 text-sm">{pkg.description}</p>
+              <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm">
+                <span>{formatPrice(pkg.price)}</span>
+                <span>{formatDuration(pkg.durationMinutes)}</span>
+                <span className="text-muted-foreground">
+                  {new Intl.DateTimeFormat('en-US', { dateStyle: 'medium' }).format(
+                    new Date(pkg.createdAt),
+                  )}
+                </span>
+              </div>
+              <div className="flex gap-2 pt-1">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => onEdit(pkg)}
+                  aria-label={`${labels.edit} ${pkg.name}`}
+                >
+                  {labels.edit}
+                </Button>
+                <Button
+                  variant="destructive"
+                  size="sm"
+                  onClick={() => onDelete(pkg)}
+                  aria-label={`${labels.delete} ${pkg.name}`}
+                >
+                  {labels.delete}
+                </Button>
+              </div>
             </div>
-            <div className="flex gap-2 pt-1">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => onEdit(pkg)}
-                aria-label={`${labels.edit} ${pkg.name}`}
-              >
-                {labels.edit}
-              </Button>
-              <Button
-                variant="destructive"
-                size="sm"
-                onClick={() => onDelete(pkg)}
-                aria-label={`${labels.delete} ${pkg.name}`}
-              >
-                {labels.delete}
-              </Button>
+          ))}
+
+          {/* Loading-more skeleton */}
+          {isFetchingNextPage && (
+            <div className="space-y-3 rounded-lg border p-4" aria-label="loading-more">
+              <Skeleton className="h-5 w-2/3" />
+              <Skeleton className="h-4 w-full" />
+              <Skeleton className="h-4 w-1/3" />
             </div>
-          </div>
-        ))
+          )}
+
+          {/* Intersection Observer sentinel */}
+          <div ref={sentinelRef} aria-hidden="true" />
+        </>
       )}
     </div>
   );

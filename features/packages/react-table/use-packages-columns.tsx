@@ -27,6 +27,7 @@ export function usePackagesColumns(): ColumnDef<PackageResponseDto>[] {
     {
       accessorKey: 'description',
       header: () => t('table.description'),
+      enableSorting: false,
     },
     {
       accessorKey: 'price',

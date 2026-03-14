@@ -36,5 +36,12 @@
     "created": "Package created successfully",
     "updated": "Package updated successfully",
     "deleted": "Package deleted successfully"
+  },
+  "pagination": {
+    "showing": "Zeige {from}–{to} von {total}",
+    "rowsPerPage": "Zeilen pro Seite",
+    "prev": "Zurück",
+    "next": "Weiter",
+    "loadingMore": "Lädt mehr..."
   }
 }

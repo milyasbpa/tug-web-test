@@ -6,6 +6,14 @@ import type { PackageResponseDto } from '@/core/api/generated/nestjsStarter.sche
 
 import { PackagesMobileCards } from './PackagesMobileCards';
 
+// Mock IntersectionObserver used internally for infinite scroll sentinel
+global.IntersectionObserver = class MockIntersectionObserver {
+  observe = vi.fn();
+  unobserve = vi.fn();
+  disconnect = vi.fn();
+  constructor(_cb: IntersectionObserverCallback) {}
+} as unknown as typeof IntersectionObserver;
+
 const mockPackages: PackageResponseDto[] = [
   {
     id: '1',
@@ -32,6 +40,7 @@ const defaultLabels = {
   delete: 'Delete',
   emptyTitle: 'No packages',
   emptyDescription: 'No packages found.',
+  loadingMore: 'Loading more...',
 };
 
 function renderCards(overrides?: Partial<React.ComponentProps<typeof PackagesMobileCards>>) {
@@ -41,6 +50,9 @@ function renderCards(overrides?: Partial<React.ComponentProps<typeof PackagesMob
     onEdit: vi.fn(),
     onDelete: vi.fn(),
     labels: defaultLabels,
+    onLoadMore: vi.fn(),
+    hasNextPage: false,
+    isFetchingNextPage: false,
     ...overrides,
   };
   return { ...render(<PackagesMobileCards {...props} />), props };
@@ -81,5 +93,15 @@ describe('PackagesMobileCards', () => {
     const { props } = renderCards();
     await user.click(screen.getByLabelText(`Delete ${mockPackages[0].name}`));
     expect(props.onDelete).toHaveBeenCalledWith(mockPackages[0]);
+  });
+
+  it('shows a loading-more skeleton when isFetchingNextPage is true', () => {
+    renderCards({ isFetchingNextPage: true });
+    expect(screen.getByLabelText('loading-more')).toBeInTheDocument();
+  });
+
+  it('does not show loading-more skeleton when isFetchingNextPage is false', () => {
+    renderCards({ isFetchingNextPage: false });
+    expect(screen.queryByLabelText('loading-more')).not.toBeInTheDocument();
   });
 });

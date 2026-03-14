@@ -6,11 +6,26 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { PackageResponseDto } from '@/core/api/generated/nestjsStarter.schemas';
 import packagesMessages from '@/core/i18n/json/en/packages.json';
 
+// Mock IntersectionObserver (used by PackagesMobileCards for infinite scroll)
+global.IntersectionObserver = class MockIntersectionObserver {
+  observe = vi.fn();
+  unobserve = vi.fn();
+  disconnect = vi.fn();
+  constructor(_cb: IntersectionObserverCallback) {}
+} as unknown as typeof IntersectionObserver;
+
 // ── Module mocks ──────────────────────────────────────────────────────────────
 const mockUseAdminPackages = vi.hoisted(() => vi.fn());
 
 vi.mock('@/features/packages/react-query/use-admin-packages', () => ({
   useAdminPackages: mockUseAdminPackages,
+}));
+
+const mockFetchNextPage = vi.hoisted(() => vi.fn());
+const mockUseAdminPackagesInfinite = vi.hoisted(() => vi.fn());
+
+vi.mock('@/features/packages/react-query/use-admin-packages-infinite', () => ({
+  useAdminPackagesInfinite: mockUseAdminPackagesInfinite,
 }));
 
 const mockOpenCreateModal = vi.hoisted(() => vi.fn());
@@ -83,6 +98,15 @@ describe('TablePackages', () => {
       isLoading: false,
       isError: false,
     });
+    mockUseAdminPackagesInfinite.mockReturnValue({
+      packages: mockPackages,
+      meta: { total: 3, page: 1, limit: 10, totalPages: 1 },
+      fetchNextPage: mockFetchNextPage,
+      hasNextPage: false,
+      isFetchingNextPage: false,
+      isLoading: false,
+      isError: false,
+    });
   });
 
   // ── Column headers ──────────────────────────────────────────────────────────
@@ -104,6 +128,15 @@ describe('TablePackages', () => {
       mockUseAdminPackages.mockReturnValue({
         packages: [],
         meta: null,
+        isLoading: true,
+        isError: false,
+      });
+      mockUseAdminPackagesInfinite.mockReturnValue({
+        packages: [],
+        meta: null,
+        fetchNextPage: mockFetchNextPage,
+        hasNextPage: false,
+        isFetchingNextPage: false,
         isLoading: true,
         isError: false,
       });
@@ -202,19 +235,16 @@ describe('TablePackages', () => {
 
   // ── Search / filter ─────────────────────────────────────────────────────────
   describe('search filter', () => {
-    it('filters rows when user types in the search input', async () => {
+    it('updates the search input value when the user types', async () => {
       renderTable();
       const user = userEvent.setup();
 
-      // Initially 3 data rows + 1 header = 4 rows
-      expect(screen.getAllByRole('row')).toHaveLength(4);
+      const searchInput = screen.getByRole('textbox', { name: /search/i });
+      await user.type(searchInput, 'Hot Stone');
 
-      await user.type(screen.getByRole('textbox', { name: /search/i }), 'Hot Stone');
-
-      // After filter: only the matching row + header = 2 rows in the desktop table (mobile cards use divs)
-      expect(screen.getAllByRole('row')).toHaveLength(2);
-      expect(screen.getAllByText('Hot Stone Therapy').length).toBeGreaterThan(0);
-      expect(screen.queryByText('Deep Tissue Massage')).not.toBeInTheDocument();
+      // Search is now server-side (debounced → API param update).
+      // We verify the controlled input reflects the typed value.
+      expect(searchInput).toHaveValue('Hot Stone');
     });
   });
 });

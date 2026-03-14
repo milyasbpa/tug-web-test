@@ -5,10 +5,16 @@
 //   { success, data: { data: PackageResponseDto[], meta: { total, page, limit, totalPages } } }
 //   i.e. double-nested — response.data?.data is the array.
 //
+// Accepts optional AdminPackagesControllerFindAllParams (page, limit, search, sortBy, sortOrder)
+// and passes them directly to the generated hook for server-side pagination/filtering.
+//
 // This wrapper unwraps the nesting so sections only deal with a clean interface.
 
 import { useAdminPackagesControllerFindAll } from '@/core/api/generated/admin-packages/admin-packages';
-import type { PackageResponseDto } from '@/core/api/generated/nestjsStarter.schemas';
+import type {
+  AdminPackagesControllerFindAllParams,
+  PackageResponseDto,
+} from '@/core/api/generated/nestjsStarter.schemas';
 
 export interface PackagesMeta {
   total: number;
@@ -24,8 +30,10 @@ export interface UseAdminPackagesResult {
   isError: boolean;
 }
 
-export function useAdminPackages(): UseAdminPackagesResult {
-  const { data: response, isLoading, isError } = useAdminPackagesControllerFindAll();
+export function useAdminPackages(
+  params?: AdminPackagesControllerFindAllParams,
+): UseAdminPackagesResult {
+  const { data: response, isLoading, isError } = useAdminPackagesControllerFindAll(params);
 
   const packages: PackageResponseDto[] = response?.data?.data ?? [];
 

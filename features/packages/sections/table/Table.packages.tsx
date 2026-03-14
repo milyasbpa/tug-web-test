@@ -2,48 +2,105 @@
 
 import {
   getCoreRowModel,
-  getFilteredRowModel,
-  getSortedRowModel,
   useReactTable,
   type SortingState,
+  type Updater,
 } from '@tanstack/react-table';
 import { Plus } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
+import type { AdminPackagesControllerFindAllParams } from '@/core/api/generated/nestjsStarter.schemas';
 import { Button } from '@/core/components/button';
 import { Input } from '@/core/components/input';
 import { PackagesMobileCards } from '@/features/packages/components/cards';
 import { PackagesDesktopTable } from '@/features/packages/components/table';
 import { useAdminPackages } from '@/features/packages/react-query/use-admin-packages';
+import { useAdminPackagesInfinite } from '@/features/packages/react-query/use-admin-packages-infinite';
 import { usePackagesColumns } from '@/features/packages/react-table/use-packages-columns';
 import { usePackagesStore } from '@/features/packages/store/packages.store';
 
+type SortByValue = NonNullable<AdminPackagesControllerFindAllParams['sortBy']>;
+type SortOrderValue = NonNullable<AdminPackagesControllerFindAllParams['sortOrder']>;
+
 const SKELETON_ROWS = 5;
+const DEFAULT_SORTING: SortingState = [{ id: 'createdAt', desc: true }];
 
 export function TablePackages() {
   const t = useTranslations('packages');
-  const { packages, isLoading } = useAdminPackages();
   const columns = usePackagesColumns();
   const openCreateModal = usePackagesStore((s) => s.openCreateModal);
   const openEditModal = usePackagesStore((s) => s.openEditModal);
   const openDeleteDialog = usePackagesStore((s) => s.openDeleteDialog);
 
-  const [globalFilter, setGlobalFilter] = useState('');
-  const [sorting, setSorting] = useState<SortingState>([]);
+  // ── Server-side params ──────────────────────────────────────────────────────
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+  const [search, setSearch] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
+  const [sorting, setSorting] = useState<SortingState>(DEFAULT_SORTING);
 
+  // Debounce search input → reset to page 1 when value settles
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(search);
+      setPage(1);
+    }, 400);
+    return () => clearTimeout(timer);
+  }, [search]);
+
+  // Derived API sort params from TanStack sorting state
+  const sortBy = sorting[0]?.id as SortByValue | undefined;
+  const sortOrder: SortOrderValue = sorting[0]?.desc ? 'desc' : 'asc';
+
+  // Common filter/sort params shared between pagination (desktop) and infinite (mobile) queries
+  const filterParams: AdminPackagesControllerFindAllParams = {
+    limit,
+    ...(debouncedSearch ? { search: debouncedSearch } : {}),
+    ...(sortBy ? { sortBy } : {}),
+    sortOrder,
+  };
+
+  // ── Data hooks ──────────────────────────────────────────────────────────────
+  const { packages, meta, isLoading } = useAdminPackages({ page, ...filterParams });
+
+  const {
+    packages: mobilePackages,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading: isMobileLoading,
+  } = useAdminPackagesInfinite(filterParams);
+
+  // ── Sort handler ────────────────────────────────────────────────────────────
+  // Prevent the "no sort" state by reverting to previous sort if the updater clears it
+  const handleSortingChange = (updater: Updater<SortingState>) => {
+    setSorting((prev) => {
+      const next = typeof updater === 'function' ? updater(prev) : updater;
+      return next.length > 0 ? next : prev;
+    });
+    setPage(1);
+  };
+
+  // ── TanStack table (core model only — sorting/filtering are server-side) ────
   const table = useReactTable({
     data: packages,
     columns,
-    state: { globalFilter, sorting },
-    onGlobalFilterChange: setGlobalFilter,
-    onSortingChange: setSorting,
+    state: { sorting },
+    onSortingChange: handleSortingChange,
     getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
+    manualSorting: true,
+    manualFiltering: true,
+    manualPagination: true,
   });
 
   const rows = table.getRowModel().rows;
+
+  // ── Pagination display ──────────────────────────────────────────────────────
+  const total = meta?.total ?? 0;
+  const totalPages = meta?.totalPages ?? 1;
+  const from = total === 0 ? 0 : (page - 1) * limit + 1;
+  const to = Math.min(page * limit, total);
 
   return (
     <div className="space-y-4">
@@ -57,8 +114,8 @@ export function TablePackages() {
 
       <Input
         placeholder={t('table.search')}
-        value={globalFilter}
-        onChange={(e) => setGlobalFilter(e.target.value)}
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
         className="max-w-sm"
         aria-label={t('table.search')}
       />
@@ -71,19 +128,40 @@ export function TablePackages() {
         skeletonRows={SKELETON_ROWS}
         emptyTitle={t('empty.title')}
         emptyDescription={t('empty.description')}
+        pagination={{
+          page,
+          totalPages,
+          total,
+          limit,
+          onPageChange: setPage,
+          onLimitChange: (newLimit) => {
+            setLimit(newLimit);
+            setPage(1);
+          },
+          labels: {
+            showingText: t('pagination.showing', { from, to, total }),
+            rowsPerPage: t('pagination.rowsPerPage'),
+            prev: t('pagination.prev'),
+            next: t('pagination.next'),
+          },
+        }}
       />
 
       <PackagesMobileCards
-        packages={rows.map((r) => r.original)}
-        isLoading={isLoading}
+        packages={mobilePackages}
+        isLoading={isMobileLoading}
         skeletonRows={SKELETON_ROWS}
         onEdit={openEditModal}
         onDelete={openDeleteDialog}
+        onLoadMore={fetchNextPage}
+        hasNextPage={hasNextPage}
+        isFetchingNextPage={isFetchingNextPage}
         labels={{
           edit: t('editPackage'),
           delete: t('deletePackage'),
           emptyTitle: t('empty.title'),
           emptyDescription: t('empty.description'),
+          loadingMore: t('pagination.loadingMore'),
         }}
       />
     </div>
