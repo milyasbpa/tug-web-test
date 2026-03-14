@@ -8,12 +8,7 @@ import tailwindcss from '@tailwindcss/vite';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const config: StorybookConfig = {
-  stories: [
-    '../components/**/*.stories.@(ts|tsx)',
-    '../icons/**/*.stories.@(ts|tsx)',
-    '../modules/**/*.stories.@(ts|tsx)',
-    '../../features/**/*.stories.@(ts|tsx)',
-  ],
+  stories: ['../components/**/*.stories.@(ts|tsx)', '../../features/**/*.stories.@(ts|tsx)'],
   addons: [
     '@chromatic-com/storybook',
     '@storybook/addon-vitest',
