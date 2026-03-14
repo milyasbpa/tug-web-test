@@ -1,6 +1,6 @@
 import axios, { type AxiosRequestConfig, type AxiosResponse, type AxiosError } from 'axios';
 
-import { useAuthStore } from '@/features/auth/store/auth.store';
+import { useAuthStore } from '@/features/login/store/auth.store';
 
 const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,

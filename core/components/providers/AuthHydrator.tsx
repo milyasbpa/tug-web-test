@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 
-import { useAuthStore } from '@/features/auth/store/auth.store';
+import { useAuthStore } from '@/features/login/store/auth.store';
 
 /**
  * AuthHydrator — client component that restores the auth session from cookie on page load.
@@ -19,7 +19,7 @@ export function AuthHydrator() {
 
   useEffect(() => {
     const match = document.cookie.match(/(?:^|;\s*)access_token=([^;]*)/);
-    const token = match ? decodeURIComponent(match[1]) : null;
+    const token = match?.[1] ? decodeURIComponent(match[1]) : null;
 
     if (token) {
       setAuth(null, token);
