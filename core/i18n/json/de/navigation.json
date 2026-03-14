@@ -1,0 +1,9 @@
+{
+  "links": {
+    "wellnessPackages": "Wellness-Pakete"
+  },
+  "user": {
+    "loggedInAs": "Angemeldet als"
+  },
+  "logout": "Abmelden"
+}

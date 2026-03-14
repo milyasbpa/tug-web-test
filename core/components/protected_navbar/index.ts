@@ -1,0 +1,1 @@
+export { ProtectedNavbar } from './ProtectedNavbar';
