@@ -1,6 +1,3 @@
 export { FormModalPackages } from './FormModal.packages';
-export { createPackageSchema, updatePackageSchema } from './form-modal.packages.schema';
-export type {
-  CreatePackageFormValues,
-  UpdatePackageFormValues,
-} from './form-modal.packages.schema';
+export { packageFormSchema } from './form-modal.packages.schema';
+export type { PackageFormValues } from './form-modal.packages.schema';
