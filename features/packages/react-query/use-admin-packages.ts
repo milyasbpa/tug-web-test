@@ -1,3 +1,48 @@
-// TODO: Step 4 — Implement use-admin-packages wrapper
-// Wraps useAdminPackagesControllerFindAll from @/core/api/generated/admin-packages/admin-packages
-export {};
+// ── useAdminPackages ───────────────────────────────────────────────────────────
+// Anti-corruption layer wrapping the generated useAdminPackagesControllerFindAll.
+//
+// ⚠️  Response shape from backend:
+//   { success, data: { data: PackageResponseDto[], meta: { total, page, limit, totalPages } } }
+//   i.e. double-nested — response.data?.data is the array.
+//
+// This wrapper unwraps the nesting so sections only deal with a clean interface.
+
+import { useAdminPackagesControllerFindAll } from '@/core/api/generated/admin-packages/admin-packages';
+import type { PackageResponseDto } from '@/core/api/generated/nestjsStarter.schemas';
+
+export interface PackagesMeta {
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+}
+
+export interface UseAdminPackagesResult {
+  packages: PackageResponseDto[];
+  meta: PackagesMeta | null;
+  isLoading: boolean;
+  isError: boolean;
+}
+
+export function useAdminPackages(): UseAdminPackagesResult {
+  const { data: response, isLoading, isError } = useAdminPackagesControllerFindAll();
+
+  const packages: PackageResponseDto[] = response?.data?.data ?? [];
+
+  const rawMeta = response?.data?.meta;
+  const meta: PackagesMeta | null = rawMeta
+    ? {
+        total: rawMeta.total ?? 0,
+        page: rawMeta.page ?? 1,
+        limit: rawMeta.limit ?? 10,
+        totalPages: rawMeta.totalPages ?? 0,
+      }
+    : null;
+
+  return {
+    packages,
+    meta,
+    isLoading,
+    isError,
+  };
+}

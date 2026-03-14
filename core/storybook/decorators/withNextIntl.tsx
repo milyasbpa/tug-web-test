@@ -6,11 +6,13 @@ import React from 'react';
 import enCommon from '../../i18n/json/en/common.json';
 import enHome from '../../i18n/json/en/home.json';
 import enLogin from '../../i18n/json/en/login.json';
+import enPackages from '../../i18n/json/en/packages.json';
 
 const messages = {
   common: enCommon,
   home: enHome,
   login: enLogin,
+  packages: enPackages,
 };
 
 export const withNextIntl: Decorator = (Story) => (

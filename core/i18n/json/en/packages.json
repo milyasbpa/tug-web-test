@@ -1,0 +1,40 @@
+{
+  "title": "Wellness Packages",
+  "addPackage": "Add Package",
+  "editPackage": "Edit Package",
+  "deletePackage": "Delete Package",
+  "table": {
+    "name": "Name",
+    "description": "Description",
+    "price": "Price",
+    "duration": "Duration",
+    "createdAt": "Created At",
+    "actions": "Actions",
+    "search": "Search packages..."
+  },
+  "form": {
+    "name": "Package Name",
+    "namePlaceholder": "e.g. Deep Tissue Massage",
+    "description": "Description",
+    "descriptionPlaceholder": "Describe the package...",
+    "price": "Price (USD)",
+    "durationMinutes": "Duration (minutes)",
+    "save": "Save",
+    "saving": "Saving..."
+  },
+  "delete": {
+    "title": "Delete Package",
+    "description": "Are you sure you want to delete \"{name}\"? This action cannot be undone.",
+    "confirm": "Delete",
+    "cancel": "Cancel"
+  },
+  "empty": {
+    "title": "No packages yet",
+    "description": "Add your first wellness package to get started."
+  },
+  "toast": {
+    "created": "Package created successfully",
+    "updated": "Package updated successfully",
+    "deleted": "Package deleted successfully"
+  }
+}

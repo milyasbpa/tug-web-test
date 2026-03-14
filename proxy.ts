@@ -9,7 +9,7 @@ const intlMiddleware = createMiddleware(routing);
  * Protected paths — checked after stripping any locale prefix.
  * Add routes here as the app grows (e.g. '/settings', '/billing').
  */
-const PROTECTED_PATHS = ['/dashboard', '/settings'];
+const PROTECTED_PATHS = ['/dashboard', '/settings', '/packages'];
 
 export default function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;

@@ -49,8 +49,8 @@ export function useLogin() {
       // 2. Update Zustand store so axios interceptor can attach the token immediately
       setAuth(null, data.accessToken);
 
-      // 3. Redirect to the dashboard
-      router.push('/dashboard');
+      // 3. Redirect to the packages page
+      router.push('/packages');
     },
 
     onError: () => {
