@@ -11,7 +11,7 @@ export default function NotFound() {
         The page you&apos;re looking for doesn&apos;t exist or has been moved.
       </p>
       <Link
-        href={ROUTES.HOME}
+        href={ROUTES.PACKAGES}
         className="bg-primary text-primary-foreground hover:bg-primary/90 mt-2 rounded-md px-4 py-2 text-sm font-medium"
       >
         Back to home
