@@ -13,10 +13,36 @@ import { usePackagesStore } from '@/features/packages/store/packages.store';
 // The Zustand store is NOT mocked — integration tests rely on the real store
 // to verify cross-section communication.
 
+// Mock next/navigation — TablePackages uses useRouter/useSearchParams/usePathname
+const mockReplace = vi.hoisted(() => vi.fn());
+vi.mock('next/navigation', () => ({
+  useRouter: () => ({ replace: mockReplace }),
+  usePathname: () => '/en/packages',
+  useSearchParams: () => new URLSearchParams(),
+}));
+
+// Mock useMediaQuery to always return true (desktop) for consistent test behaviour
+vi.mock('usehooks-ts', () => ({
+  useMediaQuery: () => true,
+  useDebounceValue: (value: string) => [value],
+}));
+
 const mockUseAdminPackages = vi.hoisted(() => vi.fn());
 
 vi.mock('@/features/packages/react-query/use-admin-packages', () => ({
   useAdminPackages: mockUseAdminPackages,
+}));
+
+vi.mock('@/features/packages/react-query/use-admin-packages-infinite', () => ({
+  useAdminPackagesInfinite: () => ({
+    packages: [],
+    meta: null,
+    fetchNextPage: vi.fn(),
+    hasNextPage: false,
+    isFetchingNextPage: false,
+    isLoading: false,
+    isError: false,
+  }),
 }));
 
 vi.mock('@/features/packages/react-query/use-create-package', () => ({

@@ -15,6 +15,21 @@ global.IntersectionObserver = class MockIntersectionObserver {
 } as unknown as typeof IntersectionObserver;
 
 // ── Module mocks ──────────────────────────────────────────────────────────────
+
+// Mock next/navigation — TablePackages now uses useRouter/useSearchParams/usePathname
+const mockReplace = vi.hoisted(() => vi.fn());
+vi.mock('next/navigation', () => ({
+  useRouter: () => ({ replace: mockReplace }),
+  usePathname: () => '/en/packages',
+  useSearchParams: () => new URLSearchParams(),
+}));
+
+// Mock useMediaQuery to always return true (desktop) for consistent test behaviour
+vi.mock('usehooks-ts', () => ({
+  useMediaQuery: () => true,
+  useDebounceValue: (value: string) => [value],
+}));
+
 const mockUseAdminPackages = vi.hoisted(() => vi.fn());
 
 vi.mock('@/features/packages/react-query/use-admin-packages', () => ({
