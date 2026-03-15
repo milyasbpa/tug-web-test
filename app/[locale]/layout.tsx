@@ -4,10 +4,9 @@ import { notFound } from 'next/navigation';
 import { NextIntlClientProvider, hasLocale } from 'next-intl';
 import { Toaster } from 'sonner';
 
-import { AuthHydrator } from '@/core/components/providers/AuthHydrator';
-import { QueryProvider } from '@/core/components/providers/QueryProvider';
 import { SkipNavLink } from '@/core/components/skip_nav/SkipNav';
 import { routing } from '@/core/i18n/routing';
+import { AuthHydrator, NumberInputGuard, QueryProvider } from '@/core/providers';
 import { ThemeProvider } from '@/core/providers/ThemeProvider';
 import '../globals.css';
 
@@ -60,6 +59,7 @@ export default async function LocaleLayout({
           <NextIntlClientProvider>
             <QueryProvider>
               <AuthHydrator />
+              <NumberInputGuard />
               <main id="main-content">{children}</main>
               <Toaster richColors position="top-right" />
             </QueryProvider>

@@ -5,6 +5,6 @@ export * from './form_field';
 export * from './input';
 export * from './pagination';
 export * from './pagination_info';
-export * from './providers';
+// providers have moved to core/providers — do not re-export from here
 export * from './rows_per_page';
 export * from './skeleton';
