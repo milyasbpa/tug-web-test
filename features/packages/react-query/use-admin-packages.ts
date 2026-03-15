@@ -1,15 +1,3 @@
-// ── useAdminPackages ───────────────────────────────────────────────────────────
-// Anti-corruption layer wrapping the generated useAdminPackagesControllerFindAll.
-//
-// ⚠️  Response shape from backend:
-//   { success, data: { data: PackageResponseDto[], meta: { total, page, limit, totalPages } } }
-//   i.e. double-nested — response.data?.data is the array.
-//
-// Accepts optional AdminPackagesControllerFindAllParams (page, limit, search, sortBy, sortOrder)
-// and passes them directly to the generated hook for server-side pagination/filtering.
-//
-// This wrapper unwraps the nesting so sections only deal with a clean interface.
-
 import { useAdminPackagesControllerFindAllV1 } from '@/core/api/generated/admin-packages/admin-packages';
 import type {
   AdminPackagesControllerFindAllV1Params,

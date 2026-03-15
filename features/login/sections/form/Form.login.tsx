@@ -12,10 +12,6 @@ import { useLogin } from '@/features/login/react-query/use-login';
 
 import { loginSchema, type LoginFormValues } from './form.login.schema';
 
-// ── FormLogin ─────────────────────────────────────────────────────────────────
-// Self-contained login form section.
-// No props from container — reads translations, owns form state.
-// onSubmit is a placeholder until Step 5 wires useLogin().
 export function FormLogin() {
   const t = useTranslations('login');
   const { mutate, isPending } = useLogin();

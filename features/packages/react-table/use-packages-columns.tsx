@@ -8,14 +8,9 @@ import { Button } from '@/core/components/button';
 import { usePackagesStore } from '@/features/packages/store/packages.store';
 import { formatDuration, formatPrice } from '@/features/packages/utils/packages.utils';
 
-// ── usePackagesColumns ─────────────────────────────────────────────────────────
-// Hook that returns TanStack column definitions for the packages table.
-// Called inside the TablePackages component so hooks (useTranslations,
-// usePackagesStore) are called in a valid React context.
 export function usePackagesColumns(): ColumnDef<PackageResponseDto>[] {
   const t = useTranslations('packages');
 
-  // Close over store actions so cell renderers don't need to call hooks themselves
   const openEditModal = usePackagesStore((s) => s.openEditModal);
   const openDeleteDialog = usePackagesStore((s) => s.openDeleteDialog);
 

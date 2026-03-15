@@ -11,10 +11,6 @@ import {
 import { handleApiError } from '@/core/lib/errors';
 import { usePackagesStore } from '@/features/packages/store/packages.store';
 
-// ── useCreatePackage ───────────────────────────────────────────────────────────
-// Anti-corruption layer wrapping useAdminPackagesControllerCreate.
-// onSuccess: invalidate packages list query + success toast + closeModal()
-// onError: error toast via handleApiError
 export function useCreatePackage() {
   const t = useTranslations('packages');
   const queryClient = useQueryClient();

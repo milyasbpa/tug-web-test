@@ -3,16 +3,13 @@ import { devtools } from 'zustand/middleware';
 
 import type { PackageResponseDto } from '@/core/api/generated/nestjsStarter.schemas';
 
-// ── Types ──────────────────────────────────────────────────────────────────────
 type ModalMode = 'create' | 'edit' | null;
 
 interface PackagesStore {
-  // State
   selectedPackage: PackageResponseDto | null;
   modalMode: ModalMode;
   isDeleteOpen: boolean;
 
-  // Actions
   openCreateModal: () => void;
   openEditModal: (pkg: PackageResponseDto) => void;
   closeModal: () => void;
@@ -20,7 +17,6 @@ interface PackagesStore {
   closeDeleteDialog: () => void;
 }
 
-// ── Store ──────────────────────────────────────────────────────────────────────
 export const usePackagesStore = create<PackagesStore>()(
   devtools(
     (set) => ({

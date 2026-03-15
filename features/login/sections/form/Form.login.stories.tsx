@@ -101,15 +101,12 @@ export const WithValidationErrors: Story = {
     const passwordInput = canvas.getByLabelText(/password/i);
     const submitButton = canvas.getByRole('button', { name: /sign in/i });
 
-    // Type an invalid email
     await userEvent.clear(emailInput);
     await userEvent.type(emailInput, 'not-an-email');
 
-    // Type a too-short password
     await userEvent.clear(passwordInput);
     await userEvent.type(passwordInput, 'short');
 
-    // Submit to trigger validation
     await userEvent.click(submitButton);
   },
 };

@@ -17,11 +17,6 @@ import { usePackagesStore } from '@/features/packages/store/packages.store';
 
 import { packageFormSchema, type PackageFormValues } from './form-modal.packages.schema';
 
-// ── FormModalPackages ──────────────────────────────────────────────────────────
-// Controlled by Zustand (usePackagesStore).
-// create mode → calls useCreatePackage.mutate({ data: values })
-// edit mode   → calls useUpdatePackage.mutate({ id, data: values })
-// Form is reset on every open (via useEffect on modalMode / selectedPackage).
 export function FormModalPackages() {
   const t = useTranslations('packages');
 
@@ -39,7 +34,6 @@ export function FormModalPackages() {
     defaultValues: { name: '', description: '' } as PackageFormValues,
   });
 
-  // Reset form fields each time the modal opens or the selected package changes.
   React.useEffect(() => {
     if (modalMode === 'edit' && selectedPackage) {
       reset({
@@ -123,7 +117,6 @@ export function FormModalPackages() {
                 <Input
                   id="price"
                   type="number"
-                  // Show empty string when value is NaN / undefined so input renders blank
                   value={
                     field.value === undefined || isNaN(field.value as number) ? '' : field.value
                   }

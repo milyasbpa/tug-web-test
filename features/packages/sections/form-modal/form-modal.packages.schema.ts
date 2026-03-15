@@ -1,9 +1,5 @@
 import { z } from 'zod';
 
-// ── packageFormSchema ──────────────────────────────────────────────────────────
-// Single schema for both create and edit modes.
-// Colocated with FormModal.packages.tsx — schema lives where it's used.
-
 export const packageFormSchema = z.object({
   name: z.string().min(1, 'Name is required').max(100),
   description: z.string().min(1, 'Description is required'),

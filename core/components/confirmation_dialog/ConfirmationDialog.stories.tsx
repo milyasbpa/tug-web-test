@@ -5,8 +5,6 @@ import { Button } from '@/core/components/button/Button';
 
 import { ConfirmationDialog } from './ConfirmationDialog';
 
-// ── Meta ──────────────────────────────────────────────────────────────────────
-
 const meta: Meta<typeof ConfirmationDialog> = {
   title: 'Components/ConfirmationDialog',
   component: ConfirmationDialog,
@@ -16,8 +14,6 @@ const meta: Meta<typeof ConfirmationDialog> = {
 
 export default meta;
 type Story = StoryObj<typeof ConfirmationDialog>;
-
-// ── Wrapper ───────────────────────────────────────────────────────────────────
 
 function DialogDemo({
   message,
@@ -47,8 +43,6 @@ function DialogDemo({
     </>
   );
 }
-
-// ── Stories ───────────────────────────────────────────────────────────────────
 
 export const Default: Story = {
   render: () => (

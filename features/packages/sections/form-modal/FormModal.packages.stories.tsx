@@ -3,8 +3,6 @@ import { vi } from 'vitest';
 
 import type { PackageResponseDto } from '@/core/api/generated/nestjsStarter.schemas';
 
-// ── Module mocks ──────────────────────────────────────────────────────────────
-// Mutation hooks are mocked so stories render without a backend.
 const mockMutateCreate = vi.hoisted(() => vi.fn());
 const mockMutateUpdate = vi.hoisted(() => vi.fn());
 
@@ -16,12 +14,10 @@ vi.mock('@/features/packages/react-query/use-update-package', () => ({
   useUpdatePackage: () => ({ mutate: mockMutateUpdate, isPending: false }),
 }));
 
-// Must import after vi.mock so mocks are registered first.
 import { usePackagesStore } from '@/features/packages/store/packages.store';
 
 import { FormModalPackages } from './FormModal.packages';
 
-// ── Mock data ─────────────────────────────────────────────────────────────────
 const mockPackage: PackageResponseDto = {
   id: '1a2b3c4d-0000-0000-0000-000000000001',
   name: 'Deep Tissue Massage',
@@ -32,7 +28,6 @@ const mockPackage: PackageResponseDto = {
   updatedAt: '2025-01-15T10:00:00.000Z',
 };
 
-// ── Meta ──────────────────────────────────────────────────────────────────────
 const meta: Meta<typeof FormModalPackages> = {
   title: 'Features/Packages/FormModalPackages',
   component: FormModalPackages,
@@ -44,8 +39,6 @@ const meta: Meta<typeof FormModalPackages> = {
 
 export default meta;
 type Story = StoryObj<typeof FormModalPackages>;
-
-// ── Stories ───────────────────────────────────────────────────────────────────
 
 /** Create mode — blank form for adding a new package. */
 export const CreateMode: Story = {

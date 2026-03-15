@@ -6,22 +6,12 @@ interface SkipNavLinkProps {
   className?: string;
 }
 
-/**
- * SkipNavLink — renders a visually hidden link that becomes visible on keyboard focus.
- * Allows keyboard/screen reader users to skip past the navbar directly to main content.
- *
- * Usage:
- *   1. Place <SkipNavLink /> as the FIRST child inside <body> (before <Navbar />).
- *   2. Add id="main-content" to your <main> element.
- *
- * WCAG 2.1 Level A — Success Criterion 2.4.1 (Bypass Blocks).
- */
+/** Visually hidden link that becomes visible on keyboard focus, for accessibility. */
 export function SkipNavLink({ contentId = 'main-content', className }: SkipNavLinkProps) {
   return (
     <a
       href={`#${contentId}`}
       className={cn(
-        // Hidden by default — only shown when focused via keyboard Tab
         'sr-only focus:not-sr-only',
         'focus:fixed focus:top-4 focus:left-4 focus:z-[9999]',
         'focus:inline-flex focus:items-center focus:rounded-md focus:px-4 focus:py-2',

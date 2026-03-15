@@ -20,11 +20,8 @@ export function ProtectedNavbar() {
   const clearAuth = useAuthStore((s) => s.clearAuth);
 
   async function handleLogout() {
-    // 1. Delete the httpOnly access_token cookie via the API route
     await fetch('/api/auth/session', { method: 'DELETE' });
-    // 2. Clear Zustand auth state
     clearAuth();
-    // 3. Redirect to login
     router.push('/login');
   }
 

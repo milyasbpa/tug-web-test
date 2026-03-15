@@ -13,7 +13,6 @@ export default getRequestConfig(async ({ requestLocale }) => {
     locale = routing.defaultLocale;
   }
 
-  // Load all namespace JSON files for the given locale and merge them into a single messages object
   const localeDir = path.resolve(process.cwd(), `core/i18n/json/${locale}`);
   const files = fs.readdirSync(localeDir).filter((f) => f.endsWith('.json'));
 

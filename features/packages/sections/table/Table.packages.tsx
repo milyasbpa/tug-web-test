@@ -31,7 +31,6 @@ const DEFAULT_SORT_BY: SortByValue = 'createdAt';
 const DEFAULT_SORT_ORDER: SortOrderValue = 'desc';
 const DEFAULT_SORTING: SortingState = [{ id: DEFAULT_SORT_BY, desc: true }];
 
-// Params that equal their default are removed from the URL to keep it clean
 const PARAM_DEFAULTS: Record<string, string> = {
   page: '1',
   limit: String(DEFAULT_LIMIT),
@@ -51,13 +50,10 @@ export function TablePackages() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  // ── Responsive ──────────────────────────────────────────────────────────────
-  // isMounted avoids SSR hydration mismatch — render nothing until client knows screen size
   const [isMounted, setIsMounted] = useState(false);
   useEffect(() => setIsMounted(true), []);
   const isDesktop = useMediaQuery('(min-width: 768px)');
 
-  // ── URL state helpers ───────────────────────────────────────────────────────
   const page = Number(searchParams.get('page') ?? '1');
   const limit = Number(searchParams.get('limit') ?? String(DEFAULT_LIMIT));
   const sortBy = (searchParams.get('sortBy') ?? DEFAULT_SORT_BY) as SortByValue;
@@ -73,8 +69,6 @@ export function TablePackages() {
     router.replace(qs ? `${pathname}?${qs}` : pathname);
   }
 
-  // ── Search input ────────────────────────────────────────────────────────────
-  // Keep local state for the input, debounce before writing to URL
   const [inputSearch, setInputSearch] = useState(() => searchParams.get('search') ?? '');
   const [debouncedSearch] = useDebounceValue(inputSearch, 400);
 
@@ -88,7 +82,6 @@ export function TablePackages() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedSearch]);
 
-  // ── Derived sort state for TanStack ────────────────────────────────────────
   const sorting: SortingState = [{ id: sortBy, desc: sortOrder === 'desc' }];
 
   const handleSortingChange = (updater: Updater<SortingState>) => {
@@ -101,7 +94,6 @@ export function TablePackages() {
     });
   };
 
-  // ── Filter params ───────────────────────────────────────────────────────────
   const apiSearch = searchParams.get('search') ?? '';
   const filterParams: AdminPackagesControllerFindAllV1Params = {
     limit,
@@ -110,7 +102,6 @@ export function TablePackages() {
     sortOrder,
   };
 
-  // ── Data hooks — only fetch the active view ─────────────────────────────────
   const { packages, meta, isLoading } = useAdminPackages(
     { page, ...filterParams },
     { enabled: isMounted && isDesktop },
@@ -124,7 +115,6 @@ export function TablePackages() {
     isLoading: isMobileLoading,
   } = useAdminPackagesInfinite(filterParams, { enabled: isMounted && !isDesktop });
 
-  // ── TanStack table (core model only — sorting/filtering are server-side) ────
   const table = useReactTable({
     data: packages,
     columns,

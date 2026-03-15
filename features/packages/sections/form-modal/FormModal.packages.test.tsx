@@ -6,7 +6,6 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { PackageResponseDto } from '@/core/api/generated/nestjsStarter.schemas';
 import packagesMessages from '@/core/i18n/json/en/packages.json';
 
-// ── Module mocks ──────────────────────────────────────────────────────────────
 const mockMutateCreate = vi.hoisted(() => vi.fn());
 const mockMutateUpdate = vi.hoisted(() => vi.fn());
 
@@ -18,8 +17,6 @@ vi.mock('@/features/packages/react-query/use-update-package', () => ({
   useUpdatePackage: () => ({ mutate: mockMutateUpdate, isPending: false }),
 }));
 
-// ── Store mock ────────────────────────────────────────────────────────────────
-// Local variables allow each test to control the store state.
 let mockModalMode: 'create' | 'edit' | null = null;
 let mockSelectedPackage: PackageResponseDto | null = null;
 const mockCloseModal = vi.hoisted(() => vi.fn());
@@ -35,10 +32,8 @@ vi.mock('@/features/packages/store/packages.store', () => ({
   },
 }));
 
-// Must import after vi.mock
 import { FormModalPackages } from './FormModal.packages';
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
 function renderModal() {
   return render(
     <NextIntlClientProvider locale="en" messages={{ packages: packagesMessages }}>
@@ -57,7 +52,6 @@ const mockPackage: PackageResponseDto = {
   updatedAt: '2025-01-15T10:00:00.000Z',
 };
 
-// ── Tests ─────────────────────────────────────────────────────────────────────
 describe('FormModalPackages', () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -65,7 +59,6 @@ describe('FormModalPackages', () => {
     mockSelectedPackage = null;
   });
 
-  // ── Visibility ──────────────────────────────────────────────────────────────
   it('does not render dialog content when modalMode is null', () => {
     renderModal();
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
@@ -87,7 +80,6 @@ describe('FormModalPackages', () => {
     expect(screen.getByDisplayValue(mockPackage.description)).toBeInTheDocument();
   });
 
-  // ── Validation ──────────────────────────────────────────────────────────────
   it('shows validation error when name is empty on submit', async () => {
     mockModalMode = 'create';
     renderModal();
@@ -111,7 +103,6 @@ describe('FormModalPackages', () => {
     expect(await screen.findByText('Price must be greater than 0')).toBeInTheDocument();
   });
 
-  // ── Submission ──────────────────────────────────────────────────────────────
   it('calls createPackage.mutate with form values in create mode', async () => {
     mockModalMode = 'create';
     renderModal();

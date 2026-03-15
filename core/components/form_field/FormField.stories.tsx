@@ -24,8 +24,6 @@ const meta: Meta<typeof FormField> = {
 export default meta;
 type Story = StoryObj<typeof FormField>;
 
-// ── Wrappers ──────────────────────────────────────────────────────────────────
-
 function DefaultStory() {
   const methods = useForm({ defaultValues: { email: '' } });
   return (
@@ -82,8 +80,6 @@ function WithErrorStory() {
     </FormProvider>
   );
 }
-
-// ── Stories ───────────────────────────────────────────────────────────────────
 
 export const Default: Story = { render: () => <DefaultStory /> };
 

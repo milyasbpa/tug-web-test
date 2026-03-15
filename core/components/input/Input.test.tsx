@@ -26,7 +26,6 @@ describe('Input', () => {
   it('renders left element inside a wrapper', () => {
     render(<Input leftElement={<span data-testid="left-icon" />} />);
     expect(screen.getByTestId('left-icon')).toBeInTheDocument();
-    // The wrapper div should now be present (not a bare input)
     expect(screen.getByRole('textbox').closest('div')).toBeInTheDocument();
   });
 

@@ -11,10 +11,6 @@ import {
 import { handleApiError } from '@/core/lib/errors';
 import { usePackagesStore } from '@/features/packages/store/packages.store';
 
-// ── useDeletePackage ───────────────────────────────────────────────────────────
-// Anti-corruption layer wrapping useAdminPackagesControllerRemove.
-// onSuccess: invalidate packages list query + success toast + closeDeleteDialog()
-// onError: error toast via handleApiError
 export function useDeletePackage() {
   const t = useTranslations('packages');
   const queryClient = useQueryClient();

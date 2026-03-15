@@ -1,12 +1,3 @@
-// ── useAdminPackagesInfinite ───────────────────────────────────────────────────
-// Infinite-scroll variant of useAdminPackages, built on TanStack's useInfiniteQuery.
-//
-// Used by PackagesMobileCards to auto-load the next page when the scroll sentinel
-// becomes visible via IntersectionObserver (see PackagesMobileCards.tsx).
-//
-// Accepts the same filter/sort params as useAdminPackages (limit, search, sortBy,
-// sortOrder) — page is managed internally as the pageParam.
-
 import { useInfiniteQuery } from '@tanstack/react-query';
 
 import { adminPackagesControllerFindAllV1 } from '@/core/api/generated/admin-packages/admin-packages';

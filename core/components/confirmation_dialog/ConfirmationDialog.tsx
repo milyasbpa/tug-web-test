@@ -6,8 +6,6 @@ import * as React from 'react';
 import { Button } from '@/core/components/button/Button';
 import { cn } from '@/core/lib/utils';
 
-// ── Types ─────────────────────────────────────────────────────────────────────
-
 export interface ConfirmationDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -26,23 +24,6 @@ export interface ConfirmationDialogProps {
   className?: string;
 }
 
-// ── ConfirmationDialog ────────────────────────────────────────────────────────
-
-/**
- * A simple confirmation dialog with an optional avatar badge, a message, and
- * Cancel / Continue action buttons.
- *
- * ```tsx
- * <ConfirmationDialog
- *   open={open}
- *   onOpenChange={setOpen}
- *   message="Applying this style will replace your existing style."
- *   avatarLabel="D"
- *   onCancel={() => setOpen(false)}
- *   onConfirm={handleConfirm}
- * />
- * ```
- */
 export function ConfirmationDialog({
   open,
   onOpenChange,

@@ -2,7 +2,6 @@ import { describe, expect, it } from 'vitest';
 
 import { formatDuration, formatPrice } from './packages.utils';
 
-// ── formatPrice ────────────────────────────────────────────────────────────────
 describe('formatPrice', () => {
   it('formats a whole number to USD string', () => {
     expect(formatPrice(120)).toBe('$120.00');
@@ -21,12 +20,10 @@ describe('formatPrice', () => {
   });
 
   it('rounds to 2 decimal places', () => {
-    // Intl.NumberFormat rounds — 1.555 becomes $1.56
     expect(formatPrice(1.555)).toBe('$1.56');
   });
 });
 
-// ── formatDuration ─────────────────────────────────────────────────────────────
 describe('formatDuration', () => {
   it('formats 60 minutes', () => {
     expect(formatDuration(60)).toBe('60 min');

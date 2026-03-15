@@ -6,10 +6,6 @@ import { ConfirmationDialog } from '@/core/components/confirmation_dialog';
 import { useDeletePackage } from '@/features/packages/react-query/use-delete-package';
 import { usePackagesStore } from '@/features/packages/store/packages.store';
 
-// ── DeleteDialogPackages ───────────────────────────────────────────────────────
-// Controlled entirely by Zustand (usePackagesStore).
-// Renders a ConfirmationDialog to confirm package deletion.
-// No props from container — behaviour driven purely by store state.
 export function DeleteDialogPackages() {
   const t = useTranslations('packages');
 

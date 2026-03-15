@@ -1,17 +1,5 @@
 import axios from 'axios';
 
-/**
- * Centralized application error class.
- * Wrap all thrown errors in this class to get consistent code + statusCode fields.
- *
- * Usage:
- *   throw new AppError('User not found', 'NOT_FOUND', 404);
- *
- *   try { ... } catch (e) {
- *     const err = handleApiError(e);
- *     toast.error(err.message);
- *   }
- */
 export class AppError extends Error {
   constructor(
     message: string,
@@ -29,19 +17,7 @@ export class AppError extends Error {
   }
 }
 
-/**
- * Converts unknown errors (from axios, fetch, or JS throws) into a typed AppError.
- * Use this in React Query onError callbacks or catch blocks to normalize errors before
- * passing them to UI (toast, ErrorState component, etc).
- *
- * Usage:
- *   useMutation({
- *     onError: (error) => {
- *       const err = handleApiError(error);
- *       toast.error(err.message);
- *     },
- *   });
- */
+/** Converts unknown errors into a typed AppError. */
 export function handleApiError(error: unknown): AppError {
   if (error instanceof AppError) {
     return error;

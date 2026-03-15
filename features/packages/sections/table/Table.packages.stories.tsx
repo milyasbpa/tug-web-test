@@ -3,9 +3,6 @@ import { vi } from 'vitest';
 
 import type { PackageResponseDto } from '@/core/api/generated/nestjsStarter.schemas';
 
-// ── Module mock ───────────────────────────────────────────────────────────────
-// useAdminPackages is mocked so stories render without a backend.
-// vi.hoisted ensures the fn reference is available inside the vi.mock factory.
 const mockUseAdminPackages = vi.hoisted(() =>
   vi.fn().mockReturnValue({
     packages: [],
@@ -19,10 +16,8 @@ vi.mock('@/features/packages/react-query/use-admin-packages', () => ({
   useAdminPackages: mockUseAdminPackages,
 }));
 
-// Must import after vi.mock
 import { TablePackages } from './Table.packages';
 
-// ── Mock data ─────────────────────────────────────────────────────────────────
 export const mockPackages: PackageResponseDto[] = [
   {
     id: '1a2b3c4d-0000-0000-0000-000000000001',
@@ -71,7 +66,6 @@ export const mockPackages: PackageResponseDto[] = [
   },
 ];
 
-// ── Meta ──────────────────────────────────────────────────────────────────────
 const meta: Meta<typeof TablePackages> = {
   title: 'Features/Packages/TablePackages',
   component: TablePackages,
@@ -83,8 +77,6 @@ const meta: Meta<typeof TablePackages> = {
 
 export default meta;
 type Story = StoryObj<typeof TablePackages>;
-
-// ── Stories ───────────────────────────────────────────────────────────────────
 
 /** Fully rendered table with 5 mock packages. */
 export const WithData: Story = {

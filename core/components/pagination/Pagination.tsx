@@ -7,9 +7,6 @@ import { cn } from '@/core/lib/utils';
 
 import { Button } from '../button/Button';
 
-// ── generatePages ─────────────────────────────────────────────────────────────
-// Returns a mix of page numbers and 'ellipsis' strings.
-// e.g. page=5, total=10 → [1, '...', 4, 5, 6, '...', 10]
 function generatePages(page: number, totalPages: number): (number | '...')[] {
   if (totalPages <= 7) {
     return Array.from({ length: totalPages }, (_, i) => i + 1);

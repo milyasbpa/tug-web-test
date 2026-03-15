@@ -3,8 +3,6 @@ import userEvent from '@testing-library/user-event';
 import * as React from 'react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-// ── Module mocks ──────────────────────────────────────────────────────────────
-
 const mockPush = vi.hoisted(() => vi.fn());
 const mockUseAuthStore = vi.hoisted(() => vi.fn());
 
@@ -32,10 +30,7 @@ vi.mock('@/features/login/store/auth.store', () => ({
   useAuthStore: mockUseAuthStore,
 }));
 
-// Must import after vi.mock
 import { ProtectedNavbar } from './ProtectedNavbar';
-
-// ── Helpers ───────────────────────────────────────────────────────────────────
 
 function setupStore(user: { email: string } | null = null, clearAuth = vi.fn()) {
   mockUseAuthStore.mockImplementation((selector: (s: unknown) => unknown) => {

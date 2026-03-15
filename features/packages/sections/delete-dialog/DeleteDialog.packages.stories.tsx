@@ -3,20 +3,16 @@ import { vi } from 'vitest';
 
 import type { PackageResponseDto } from '@/core/api/generated/nestjsStarter.schemas';
 
-// ── Module mocks ──────────────────────────────────────────────────────────────
-// useDeletePackage is mocked so stories render without a backend.
 const mockMutateDelete = vi.hoisted(() => vi.fn());
 
 vi.mock('@/features/packages/react-query/use-delete-package', () => ({
   useDeletePackage: () => ({ mutate: mockMutateDelete, isPending: false }),
 }));
 
-// Must import after vi.mock
 import { usePackagesStore } from '@/features/packages/store/packages.store';
 
 import { DeleteDialogPackages } from './DeleteDialog.packages';
 
-// ── Mock data ─────────────────────────────────────────────────────────────────
 const mockPackage: PackageResponseDto = {
   id: '1a2b3c4d-0000-0000-0000-000000000001',
   name: 'Deep Tissue Massage',
@@ -27,7 +23,6 @@ const mockPackage: PackageResponseDto = {
   updatedAt: '2025-01-15T10:00:00.000Z',
 };
 
-// ── Meta ──────────────────────────────────────────────────────────────────────
 const meta: Meta<typeof DeleteDialogPackages> = {
   title: 'Features/Packages/DeleteDialogPackages',
   component: DeleteDialogPackages,
@@ -39,8 +34,6 @@ const meta: Meta<typeof DeleteDialogPackages> = {
 
 export default meta;
 type Story = StoryObj<typeof DeleteDialogPackages>;
-
-// ── Stories ───────────────────────────────────────────────────────────────────
 
 /**
  * Default delete confirmation — dialog open with the package name interpolated

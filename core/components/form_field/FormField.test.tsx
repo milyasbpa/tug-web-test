@@ -6,8 +6,6 @@ import { describe, expect, it } from 'vitest';
 
 import { FormField } from './FormField';
 
-// ── Helper: wrap FormField inside a real react-hook-form form ─────────────────
-
 function TestForm({
   label,
   description,
@@ -79,10 +77,8 @@ describe('FormField', () => {
 
   it('clears the error once the user provides valid input', async () => {
     render(<TestForm required />);
-    // Trigger validation error
     await userEvent.click(screen.getByRole('button', { name: 'Submit' }));
     await waitFor(() => expect(screen.getByText('Email is required')).toBeInTheDocument());
-    // Fix the field
     await userEvent.type(screen.getByTestId('email-input'), 'user@example.com');
     await userEvent.click(screen.getByRole('button', { name: 'Submit' }));
     await waitFor(() => {

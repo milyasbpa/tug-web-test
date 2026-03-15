@@ -8,12 +8,6 @@ import type { PackageResponseDto } from '@/core/api/generated/nestjsStarter.sche
 import packagesMessages from '@/core/i18n/json/en/packages.json';
 import { usePackagesStore } from '@/features/packages/store/packages.store';
 
-// ── Module mocks ──────────────────────────────────────────────────────────────
-// Mock all API hooks so no backend is needed.
-// The Zustand store is NOT mocked — integration tests rely on the real store
-// to verify cross-section communication.
-
-// Mock next/navigation — TablePackages uses useRouter/useSearchParams/usePathname
 const mockReplace = vi.hoisted(() => vi.fn());
 vi.mock('next/navigation', () => ({
   useRouter: () => ({ replace: mockReplace }),
@@ -21,7 +15,6 @@ vi.mock('next/navigation', () => ({
   useSearchParams: () => new URLSearchParams(),
 }));
 
-// Mock useMediaQuery to always return true (desktop) for consistent test behaviour
 vi.mock('usehooks-ts', () => ({
   useMediaQuery: () => true,
   useDebounceValue: (value: string) => [value],
@@ -57,10 +50,8 @@ vi.mock('@/features/packages/react-query/use-delete-package', () => ({
   useDeletePackage: () => ({ mutate: vi.fn(), isPending: false }),
 }));
 
-// Must import after vi.mock
 import { PackagesContainer } from './Packages.container';
 
-// ── Mock data ─────────────────────────────────────────────────────────────────
 const mockPackages: PackageResponseDto[] = [
   {
     id: '1a2b3c4d-0000-0000-0000-000000000001',
@@ -82,7 +73,6 @@ const mockPackages: PackageResponseDto[] = [
   },
 ];
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
 function renderContainer() {
   const queryClient = new QueryClient({
     defaultOptions: { queries: { retry: false }, mutations: { retry: false } },
@@ -96,11 +86,9 @@ function renderContainer() {
   );
 }
 
-// ── Tests ─────────────────────────────────────────────────────────────────────
 describe('PackagesContainer (integration)', () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    // Reset store to clean state before each test
     usePackagesStore.setState({ modalMode: null, selectedPackage: null, isDeleteOpen: false });
     mockUseAdminPackages.mockReturnValue({
       packages: mockPackages,
@@ -111,39 +99,29 @@ describe('PackagesContainer (integration)', () => {
   });
 
   afterEach(() => {
-    // Clean up store after each test to prevent state leakage
     usePackagesStore.setState({ modalMode: null, selectedPackage: null, isDeleteOpen: false });
   });
 
-  // ── Mount ───────────────────────────────────────────────────────────────────
   it('renders all three sections without error', () => {
     renderContainer();
-    // Table section: package data visible in desktop table and/or mobile cards
     expect(screen.getAllByText('Deep Tissue Massage').length).toBeGreaterThan(0);
-    // FormModal + DeleteDialog are mounted but hidden (modalMode null / isDeleteOpen false)
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
 
-  // ── Table → FormModal (Edit) ─────────────────────────────────────────────────
   it('clicking Edit in TablePackages opens FormModalPackages with pre-filled data', async () => {
     renderContainer();
 
-    // Click the Edit action button on the first row
     const editButtons = screen.getAllByRole('button', { name: /edit/i });
     await userEvent.click(editButtons[0]!);
 
-    // FormModalPackages should now be visible with edit title
     await waitFor(() => {
       expect(screen.getByRole('dialog')).toBeInTheDocument();
     });
-    // Scope edit title check to the dialog to avoid matching mobile card buttons
     const dialog = screen.getByRole('dialog');
     expect(within(dialog).getByText(packagesMessages.editPackage)).toBeInTheDocument();
-    // First package's name should be pre-filled in the form
     expect(screen.getByDisplayValue('Deep Tissue Massage')).toBeInTheDocument();
   });
 
-  // ── Table → DeleteDialog ──────────────────────────────────────────────────────
   it('clicking Delete in TablePackages opens DeleteDialogPackages with package name', async () => {
     renderContainer();
 
@@ -153,12 +131,10 @@ describe('PackagesContainer (integration)', () => {
     await waitFor(() => {
       expect(screen.getByRole('dialog')).toBeInTheDocument();
     });
-    // Package name should be interpolated into the delete message
     const dialog = screen.getByRole('dialog');
     expect(within(dialog).getByText(/Deep Tissue Massage/i)).toBeInTheDocument();
   });
 
-  // ── Table → FormModal (Create) ────────────────────────────────────────────────
   it('clicking Add Package in TablePackages opens FormModalPackages in create mode', async () => {
     renderContainer();
 
@@ -167,10 +143,7 @@ describe('PackagesContainer (integration)', () => {
     await waitFor(() => {
       expect(screen.getByRole('dialog')).toBeInTheDocument();
     });
-    // Dialog heading should say "Add Package" (table button also has this text,
-    // so scope to the heading role to avoid ambiguity)
     expect(screen.getByRole('heading', { name: packagesMessages.addPackage })).toBeInTheDocument();
-    // Name field should be empty (create mode)
     expect(screen.getByLabelText(packagesMessages.form.name)).toHaveValue('');
   });
 });

@@ -6,7 +6,6 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { PackageResponseDto } from '@/core/api/generated/nestjsStarter.schemas';
 import packagesMessages from '@/core/i18n/json/en/packages.json';
 
-// Mock IntersectionObserver (used by PackagesMobileCards for infinite scroll)
 global.IntersectionObserver = class MockIntersectionObserver {
   observe = vi.fn();
   unobserve = vi.fn();
@@ -14,9 +13,6 @@ global.IntersectionObserver = class MockIntersectionObserver {
   constructor(_cb: IntersectionObserverCallback) {}
 } as unknown as typeof IntersectionObserver;
 
-// ── Module mocks ──────────────────────────────────────────────────────────────
-
-// Mock next/navigation — TablePackages now uses useRouter/useSearchParams/usePathname
 const mockReplace = vi.hoisted(() => vi.fn());
 vi.mock('next/navigation', () => ({
   useRouter: () => ({ replace: mockReplace }),
@@ -24,7 +20,6 @@ vi.mock('next/navigation', () => ({
   useSearchParams: () => new URLSearchParams(),
 }));
 
-// Mock useMediaQuery to always return true (desktop) for consistent test behaviour
 vi.mock('usehooks-ts', () => ({
   useMediaQuery: () => true,
   useDebounceValue: (value: string) => [value],
@@ -63,7 +58,6 @@ vi.mock('@/features/packages/store/packages.store', () => ({
 
 import { TablePackages } from './Table.packages';
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
 function renderTable() {
   return render(
     <NextIntlClientProvider locale="en" messages={{ packages: packagesMessages }}>
@@ -72,7 +66,6 @@ function renderTable() {
   );
 }
 
-// ── Mock data ─────────────────────────────────────────────────────────────────
 const mockPackages: PackageResponseDto[] = [
   {
     id: '1a2b3c4d-0000-0000-0000-000000000001',
@@ -103,7 +96,6 @@ const mockPackages: PackageResponseDto[] = [
   },
 ];
 
-// ── Tests ─────────────────────────────────────────────────────────────────────
 describe('TablePackages', () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -124,7 +116,6 @@ describe('TablePackages', () => {
     });
   });
 
-  // ── Column headers ──────────────────────────────────────────────────────────
   describe('column headers', () => {
     it('renders all expected column headers', () => {
       renderTable();
@@ -137,7 +128,6 @@ describe('TablePackages', () => {
     });
   });
 
-  // ── Loading state ───────────────────────────────────────────────────────────
   describe('loading state', () => {
     it('renders skeleton rows and no data rows when loading', () => {
       mockUseAdminPackages.mockReturnValue({
@@ -158,12 +148,10 @@ describe('TablePackages', () => {
       renderTable();
 
       expect(screen.getAllByRole('row', { name: /loading-row/i })).toHaveLength(5);
-      // No real data cells with package names
       expect(screen.queryByText('Deep Tissue Massage')).not.toBeInTheDocument();
     });
   });
 
-  // ── Empty state ─────────────────────────────────────────────────────────────
   describe('empty state', () => {
     it('renders empty state component when packages array is empty', () => {
       mockUseAdminPackages.mockReturnValue({
@@ -181,17 +169,14 @@ describe('TablePackages', () => {
     });
   });
 
-  // ── Data rows ───────────────────────────────────────────────────────────────
   describe('with data', () => {
     it('renders one row per package', () => {
       renderTable();
-      // 1 header row + 3 data rows = 4 rows total
       expect(screen.getAllByRole('row')).toHaveLength(4);
     });
 
     it('renders package names in rows', () => {
       renderTable();
-      // Each name appears in both desktop table and mobile cards
       expect(screen.getAllByText('Deep Tissue Massage').length).toBeGreaterThan(0);
       expect(screen.getAllByText('Hot Stone Therapy').length).toBeGreaterThan(0);
       expect(screen.getAllByText('Aromatherapy Session').length).toBeGreaterThan(0);
@@ -208,13 +193,11 @@ describe('TablePackages', () => {
     });
   });
 
-  // ── Edit action ─────────────────────────────────────────────────────────────
   describe('edit action', () => {
     it('calls openEditModal with the correct package when Edit is clicked', async () => {
       renderTable();
       const user = userEvent.setup();
 
-      // Name appears in both desktop table and mobile cards — click the first
       await user.click(screen.getAllByRole('button', { name: /edit deep tissue massage/i })[0]);
 
       expect(mockOpenEditModal).toHaveBeenCalledOnce();
@@ -222,13 +205,11 @@ describe('TablePackages', () => {
     });
   });
 
-  // ── Delete action ───────────────────────────────────────────────────────────
   describe('delete action', () => {
     it('calls openDeleteDialog with the correct package when Delete is clicked', async () => {
       renderTable();
       const user = userEvent.setup();
 
-      // Name appears in both desktop table and mobile cards — click the first
       await user.click(screen.getAllByRole('button', { name: /delete hot stone therapy/i })[0]);
 
       expect(mockOpenDeleteDialog).toHaveBeenCalledOnce();
@@ -236,7 +217,6 @@ describe('TablePackages', () => {
     });
   });
 
-  // ── Add Package ─────────────────────────────────────────────────────────────
   describe('add package button', () => {
     it('calls openCreateModal when "Add Package" is clicked', async () => {
       renderTable();
@@ -248,7 +228,6 @@ describe('TablePackages', () => {
     });
   });
 
-  // ── Search / filter ─────────────────────────────────────────────────────────
   describe('search filter', () => {
     it('updates the search input value when the user types', async () => {
       renderTable();
@@ -257,8 +236,6 @@ describe('TablePackages', () => {
       const searchInput = screen.getByRole('textbox', { name: /search/i });
       await user.type(searchInput, 'Hot Stone');
 
-      // Search is now server-side (debounced → API param update).
-      // We verify the controlled input reflects the typed value.
       expect(searchInput).toHaveValue('Hot Stone');
     });
   });

@@ -6,7 +6,6 @@ import type { PackageResponseDto } from '@/core/api/generated/nestjsStarter.sche
 
 import { PackagesMobileCards } from './PackagesMobileCards';
 
-// Mock IntersectionObserver used internally for infinite scroll sentinel
 global.IntersectionObserver = class MockIntersectionObserver {
   observe = vi.fn();
   unobserve = vi.fn();

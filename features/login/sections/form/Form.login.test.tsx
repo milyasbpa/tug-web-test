@@ -6,9 +6,6 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import loginMessages from '@/core/i18n/json/en/login.json';
 
-// ── Module mock ───────────────────────────────────────────────────────────────
-// useLogin is mocked so Form.login.tsx can be tested without a real network.
-// vi.hoisted ensures the fn reference is available inside the vi.mock factory.
 const mockMutate = vi.hoisted(() => vi.fn());
 
 vi.mock('@/features/login/react-query/use-login', () => ({
@@ -16,8 +13,6 @@ vi.mock('@/features/login/react-query/use-login', () => ({
 }));
 
 import { FormLogin } from './Form.login';
-
-// ── Test helpers ──────────────────────────────────────────────────────────────
 
 function renderFormLogin() {
   const client = new QueryClient({ defaultOptions: { mutations: { retry: false } } });
@@ -29,8 +24,6 @@ function renderFormLogin() {
     </QueryClientProvider>,
   );
 }
-
-// ── Tests ─────────────────────────────────────────────────────────────────────
 
 describe('FormLogin', () => {
   describe('rendering', () => {

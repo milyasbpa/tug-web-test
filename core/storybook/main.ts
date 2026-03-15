@@ -24,7 +24,6 @@ const config: StorybookConfig = {
       plugins: [tailwindcss()],
       resolve: {
         alias: {
-          // __dirname is core/storybook, go up two levels to reach project root
           '@': path.resolve(__dirname, '../../'),
         },
       },

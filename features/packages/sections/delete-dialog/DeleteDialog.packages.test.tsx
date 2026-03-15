@@ -6,14 +6,12 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { PackageResponseDto } from '@/core/api/generated/nestjsStarter.schemas';
 import packagesMessages from '@/core/i18n/json/en/packages.json';
 
-// ── Module mocks ──────────────────────────────────────────────────────────────
 const mockMutateDelete = vi.hoisted(() => vi.fn());
 
 vi.mock('@/features/packages/react-query/use-delete-package', () => ({
   useDeletePackage: () => ({ mutate: mockMutateDelete, isPending: false }),
 }));
 
-// ── Store mock ────────────────────────────────────────────────────────────────
 let mockIsDeleteOpen = false;
 let mockSelectedPackage: PackageResponseDto | null = null;
 const mockCloseDeleteDialog = vi.hoisted(() => vi.fn());
@@ -29,10 +27,8 @@ vi.mock('@/features/packages/store/packages.store', () => ({
   },
 }));
 
-// Must import after vi.mock
 import { DeleteDialogPackages } from './DeleteDialog.packages';
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
 function renderDialog() {
   return render(
     <NextIntlClientProvider locale="en" messages={{ packages: packagesMessages }}>
@@ -51,7 +47,6 @@ const mockPackage: PackageResponseDto = {
   updatedAt: '2025-01-15T10:00:00.000Z',
 };
 
-// ── Tests ─────────────────────────────────────────────────────────────────────
 describe('DeleteDialogPackages', () => {
   beforeEach(() => {
     vi.clearAllMocks();

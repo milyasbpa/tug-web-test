@@ -9,13 +9,6 @@ import {
 
 import { cn } from '@/core/lib/utils';
 
-// ── FormField ─────────────────────────────────────────────────────────────────
-// Thin wrapper around react-hook-form Controller that injects error/label UI.
-// Usage:
-//   <FormField name="email" control={control} label="Email" render={({ field }) => (
-//     <Input {...field} type="email" placeholder="you@example.com" />
-//   )} />
-
 export interface FormFieldProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,

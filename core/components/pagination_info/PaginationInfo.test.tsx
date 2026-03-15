@@ -12,7 +12,6 @@ describe('PaginationInfo', () => {
   it('renders a custom label when provided', () => {
     render(<PaginationInfo from={1} to={10} total={50} label="Items 1 to 10 of 50" />);
     expect(screen.getByText('Items 1 to 10 of 50')).toBeInTheDocument();
-    // default template should NOT appear when custom label is set
     expect(screen.queryByText('Showing 1–10 of 50')).not.toBeInTheDocument();
   });
 

@@ -16,9 +16,7 @@ describe('EmptyState', () => {
 
   it('does not render a description element when description is omitted', () => {
     render(<EmptyState title="Empty" />);
-    // Only the title <p> exists; no second paragraph for description
     const paragraphs = screen.getAllByRole('paragraph');
-    // title paragraph is present, but no additional description paragraph
     expect(paragraphs).toHaveLength(1);
     expect(paragraphs[0]).toHaveTextContent('Empty');
   });

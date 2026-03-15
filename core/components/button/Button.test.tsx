@@ -41,7 +41,6 @@ describe('Button', () => {
   it('renders as child element when asChild is true', () => {
     render(
       <Button asChild>
-        {/* Use an external URL to avoid the next/no-html-link-for-pages rule */}
         <a href="https://example.com">Link</a>
       </Button>,
     );

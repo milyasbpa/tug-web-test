@@ -56,7 +56,6 @@ describe('Pagination', () => {
 
   it('renders ellipsis spans for large page ranges', () => {
     const { container } = render(<Pagination page={5} totalPages={20} onPageChange={vi.fn()} />);
-    // aria-hidden ellipsis spans contain an svg (MoreHorizontal icon)
     const ellipsisSpans = container.querySelectorAll('span[aria-hidden]');
     expect(ellipsisSpans.length).toBeGreaterThan(0);
   });
