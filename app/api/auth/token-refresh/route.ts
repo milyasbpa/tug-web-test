@@ -1,7 +1,7 @@
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 
-import type { TokenRefreshResponse } from '@/core/api/generated/starterKitAPIDocumentation.schemas';
+import type { AuthControllerRefreshV1200 } from '@/core/api/generated/nestjsStarter.schemas';
 
 const IS_PRODUCTION = process.env.NODE_ENV === 'production';
 
@@ -38,7 +38,12 @@ export async function POST() {
       return NextResponse.json({ error: 'Refresh failed' }, { status: 401 });
     }
 
-    const { accessToken } = (await response.json()) as TokenRefreshResponse;
+    const { data } = (await response.json()) as AuthControllerRefreshV1200;
+    const accessToken = data?.accessToken;
+
+    if (!accessToken) {
+      return NextResponse.json({ error: 'Invalid refresh response' }, { status: 500 });
+    }
 
     // Set new access_token cookie
     cookieStore.set('access_token', accessToken, {

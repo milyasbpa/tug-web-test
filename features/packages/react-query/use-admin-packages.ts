@@ -10,9 +10,9 @@
 //
 // This wrapper unwraps the nesting so sections only deal with a clean interface.
 
-import { useAdminPackagesControllerFindAll } from '@/core/api/generated/admin-packages/admin-packages';
+import { useAdminPackagesControllerFindAllV1 } from '@/core/api/generated/admin-packages/admin-packages';
 import type {
-  AdminPackagesControllerFindAllParams,
+  AdminPackagesControllerFindAllV1Params,
   PackageResponseDto,
 } from '@/core/api/generated/nestjsStarter.schemas';
 
@@ -31,9 +31,9 @@ export interface UseAdminPackagesResult {
 }
 
 export function useAdminPackages(
-  params?: AdminPackagesControllerFindAllParams,
+  params?: AdminPackagesControllerFindAllV1Params,
 ): UseAdminPackagesResult {
-  const { data: response, isLoading, isError } = useAdminPackagesControllerFindAll(params);
+  const { data: response, isLoading, isError } = useAdminPackagesControllerFindAllV1(params);
 
   const packages: PackageResponseDto[] = response?.data?.data ?? [];
 

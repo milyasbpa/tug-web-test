@@ -1,9 +1,9 @@
 {
   "openapi": "3.0.0",
   "paths": {
-    "/api": {
+    "/api/v1": {
       "get": {
-        "operationId": "AppController_getHello",
+        "operationId": "AppController_getHello_v1",
         "parameters": [],
         "responses": {
           "200": {
@@ -13,9 +13,9 @@
         "tags": ["App"]
       }
     },
-    "/api/auth/register": {
+    "/api/v1/auth/register": {
       "post": {
-        "operationId": "AuthController_register",
+        "operationId": "AuthController_register_v1",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -33,7 +33,23 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AuthResponseDto"
+                  "allOf": [
+                    {
+                      "properties": {
+                        "success": {
+                          "type": "boolean",
+                          "example": true
+                        },
+                        "timestamp": {
+                          "type": "string",
+                          "example": "2026-01-01T00:00:00.000Z"
+                        },
+                        "data": {
+                          "$ref": "#/components/schemas/AuthResponseDto"
+                        }
+                      }
+                    }
+                  ]
                 }
               }
             }
@@ -43,9 +59,9 @@
         "tags": ["auth"]
       }
     },
-    "/api/auth/login": {
+    "/api/v1/auth/login": {
       "post": {
-        "operationId": "AuthController_login",
+        "operationId": "AuthController_login_v1",
         "parameters": [],
         "responses": {
           "200": {
@@ -53,7 +69,23 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AuthResponseDto"
+                  "allOf": [
+                    {
+                      "properties": {
+                        "success": {
+                          "type": "boolean",
+                          "example": true
+                        },
+                        "timestamp": {
+                          "type": "string",
+                          "example": "2026-01-01T00:00:00.000Z"
+                        },
+                        "data": {
+                          "$ref": "#/components/schemas/AuthResponseDto"
+                        }
+                      }
+                    }
+                  ]
                 }
               }
             }
@@ -66,9 +98,9 @@
         "tags": ["auth"]
       }
     },
-    "/api/auth/refresh": {
+    "/api/v1/auth/refresh": {
       "post": {
-        "operationId": "AuthController_refresh",
+        "operationId": "AuthController_refresh_v1",
         "parameters": [],
         "responses": {
           "200": {
@@ -76,7 +108,23 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AuthResponseDto"
+                  "allOf": [
+                    {
+                      "properties": {
+                        "success": {
+                          "type": "boolean",
+                          "example": true
+                        },
+                        "timestamp": {
+                          "type": "string",
+                          "example": "2026-01-01T00:00:00.000Z"
+                        },
+                        "data": {
+                          "$ref": "#/components/schemas/AuthResponseDto"
+                        }
+                      }
+                    }
+                  ]
                 }
               }
             }
@@ -94,9 +142,9 @@
         "tags": ["auth"]
       }
     },
-    "/api/auth/logout": {
+    "/api/v1/auth/logout": {
       "post": {
-        "operationId": "AuthController_logout",
+        "operationId": "AuthController_logout_v1",
         "parameters": [],
         "responses": {
           "204": {
@@ -112,9 +160,9 @@
         "tags": ["auth"]
       }
     },
-    "/api/auth/me": {
+    "/api/v1/auth/me": {
       "get": {
-        "operationId": "AuthController_me",
+        "operationId": "AuthController_me_v1",
         "parameters": [],
         "responses": {
           "200": {
@@ -130,9 +178,9 @@
         "tags": ["auth"]
       }
     },
-    "/api/admin/packages": {
+    "/api/v1/admin/packages": {
       "get": {
-        "operationId": "AdminPackagesController_findAll",
+        "operationId": "AdminPackagesController_findAll_v1",
         "parameters": [
           {
             "name": "page",
@@ -249,7 +297,7 @@
         "tags": ["admin / packages"]
       },
       "post": {
-        "operationId": "AdminPackagesController_create",
+        "operationId": "AdminPackagesController_create_v1",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -267,7 +315,23 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PackageResponseDto"
+                  "allOf": [
+                    {
+                      "properties": {
+                        "success": {
+                          "type": "boolean",
+                          "example": true
+                        },
+                        "timestamp": {
+                          "type": "string",
+                          "example": "2026-01-01T00:00:00.000Z"
+                        },
+                        "data": {
+                          "$ref": "#/components/schemas/PackageResponseDto"
+                        }
+                      }
+                    }
+                  ]
                 }
               }
             }
@@ -282,9 +346,9 @@
         "tags": ["admin / packages"]
       }
     },
-    "/api/admin/packages/{id}": {
+    "/api/v1/admin/packages/{id}": {
       "put": {
-        "operationId": "AdminPackagesController_update",
+        "operationId": "AdminPackagesController_update_v1",
         "parameters": [
           {
             "name": "id",
@@ -311,7 +375,23 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PackageResponseDto"
+                  "allOf": [
+                    {
+                      "properties": {
+                        "success": {
+                          "type": "boolean",
+                          "example": true
+                        },
+                        "timestamp": {
+                          "type": "string",
+                          "example": "2026-01-01T00:00:00.000Z"
+                        },
+                        "data": {
+                          "$ref": "#/components/schemas/PackageResponseDto"
+                        }
+                      }
+                    }
+                  ]
                 }
               }
             }
@@ -326,7 +406,7 @@
         "tags": ["admin / packages"]
       },
       "delete": {
-        "operationId": "AdminPackagesController_remove",
+        "operationId": "AdminPackagesController_remove_v1",
         "parameters": [
           {
             "name": "id",
@@ -343,7 +423,23 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PackageResponseDto"
+                  "allOf": [
+                    {
+                      "properties": {
+                        "success": {
+                          "type": "boolean",
+                          "example": true
+                        },
+                        "timestamp": {
+                          "type": "string",
+                          "example": "2026-01-01T00:00:00.000Z"
+                        },
+                        "data": {
+                          "$ref": "#/components/schemas/PackageResponseDto"
+                        }
+                      }
+                    }
+                  ]
                 }
               }
             }
@@ -358,9 +454,9 @@
         "tags": ["admin / packages"]
       }
     },
-    "/api/mobile/packages": {
+    "/api/v1/mobile/packages": {
       "get": {
-        "operationId": "MobilePackagesController_findAll",
+        "operationId": "MobilePackagesController_findAll_v1",
         "parameters": [
           {
             "name": "page",
@@ -487,7 +583,7 @@
   "tags": [],
   "servers": [
     {
-      "url": "http://localhost:3000",
+      "url": "http://localhost:4000",
       "description": "Local"
     },
     {
@@ -504,6 +600,18 @@
       }
     },
     "schemas": {
+      "AuthResponseDto": {
+        "type": "object",
+        "properties": {
+          "accessToken": {
+            "type": "string"
+          },
+          "refreshToken": {
+            "type": "string"
+          }
+        },
+        "required": ["accessToken", "refreshToken"]
+      },
       "RegisterDto": {
         "type": "object",
         "properties": {
@@ -518,18 +626,6 @@
           }
         },
         "required": ["email", "password"]
-      },
-      "AuthResponseDto": {
-        "type": "object",
-        "properties": {
-          "accessToken": {
-            "type": "string"
-          },
-          "refreshToken": {
-            "type": "string"
-          }
-        },
-        "required": ["accessToken", "refreshToken"]
       },
       "PackageResponseDto": {
         "type": "object",

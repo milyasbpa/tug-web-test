@@ -5,8 +5,8 @@ import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 
 import {
-  getAdminPackagesControllerFindAllQueryKey,
-  useAdminPackagesControllerCreate,
+  getAdminPackagesControllerFindAllV1QueryKey,
+  useAdminPackagesControllerCreateV1,
 } from '@/core/api/generated/admin-packages/admin-packages';
 import { handleApiError } from '@/core/lib/errors';
 import { usePackagesStore } from '@/features/packages/store/packages.store';
@@ -20,11 +20,11 @@ export function useCreatePackage() {
   const queryClient = useQueryClient();
   const closeModal = usePackagesStore((s) => s.closeModal);
 
-  return useAdminPackagesControllerCreate({
+  return useAdminPackagesControllerCreateV1({
     mutation: {
       onSuccess: async () => {
         await queryClient.invalidateQueries({
-          queryKey: getAdminPackagesControllerFindAllQueryKey(),
+          queryKey: getAdminPackagesControllerFindAllV1QueryKey(),
         });
         toast.success(t('toast.created'));
         closeModal();

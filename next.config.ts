@@ -21,7 +21,7 @@ const cspDirectives = [
   "font-src 'self'",
   "img-src 'self' data: blob: https:",
   // Restrict connections to same origin; extend for your API domain per-project.
-  "connect-src 'self'",
+  `connect-src 'self' ${process.env.NEXT_PUBLIC_API_URL ?? ''}`.trim(),
   "media-src 'self'",
   // Block all plugins (Flash, etc.)
   "object-src 'none'",

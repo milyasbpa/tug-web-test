@@ -9,15 +9,15 @@
 
 import { useInfiniteQuery } from '@tanstack/react-query';
 
-import { adminPackagesControllerFindAll } from '@/core/api/generated/admin-packages/admin-packages';
+import { adminPackagesControllerFindAllV1 } from '@/core/api/generated/admin-packages/admin-packages';
 import type {
-  AdminPackagesControllerFindAllParams,
+  AdminPackagesControllerFindAllV1Params,
   PackageResponseDto,
 } from '@/core/api/generated/nestjsStarter.schemas';
 
 import type { PackagesMeta } from './use-admin-packages';
 
-type InfiniteParams = Omit<AdminPackagesControllerFindAllParams, 'page'>;
+type InfiniteParams = Omit<AdminPackagesControllerFindAllV1Params, 'page'>;
 
 export interface UseAdminPackagesInfiniteResult {
   packages: PackageResponseDto[];
@@ -34,7 +34,7 @@ export function useAdminPackagesInfinite(params?: InfiniteParams): UseAdminPacka
     useInfiniteQuery({
       queryKey: ['/api/admin/packages/infinite', params],
       queryFn: ({ pageParam, signal }) =>
-        adminPackagesControllerFindAll({ ...params, page: pageParam as number }, signal),
+        adminPackagesControllerFindAllV1({ ...params, page: pageParam as number }, signal),
       initialPageParam: 1,
       getNextPageParam: (lastPage) => {
         const meta = lastPage.data?.meta;
