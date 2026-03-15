@@ -60,7 +60,7 @@ export function PackagesMobileCards({
   }, [onLoadMore, hasNextPage, isFetchingNextPage]);
 
   return (
-    <div className="flex flex-col gap-3 md:hidden">
+    <div className="flex flex-col gap-3">
       {isLoading ? (
         Array.from({ length: skeletonRows }).map((_, i) => (
           <div key={i} className="space-y-3 rounded-lg border p-4" aria-label="loading-row">

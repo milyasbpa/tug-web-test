@@ -32,8 +32,15 @@ export interface UseAdminPackagesResult {
 
 export function useAdminPackages(
   params?: AdminPackagesControllerFindAllV1Params,
+  options?: { enabled?: boolean },
 ): UseAdminPackagesResult {
-  const { data: response, isLoading, isError } = useAdminPackagesControllerFindAllV1(params);
+  const {
+    data: response,
+    isLoading,
+    isError,
+  } = useAdminPackagesControllerFindAllV1(params, {
+    query: { enabled: options?.enabled ?? true },
+  });
 
   const packages: PackageResponseDto[] = response?.data?.data ?? [];
 

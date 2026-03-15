@@ -56,7 +56,7 @@ export function PackagesDesktopTable({
   const to = pagination ? Math.min(pagination.page * pagination.limit, pagination.total) : 0;
 
   return (
-    <div className="hidden md:block">
+    <div>
       <div className="rounded-md border">
         <table className="w-full text-sm">
           <thead>

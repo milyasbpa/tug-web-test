@@ -29,9 +29,13 @@ export interface UseAdminPackagesInfiniteResult {
   isError: boolean;
 }
 
-export function useAdminPackagesInfinite(params?: InfiniteParams): UseAdminPackagesInfiniteResult {
+export function useAdminPackagesInfinite(
+  params?: InfiniteParams,
+  options?: { enabled?: boolean },
+): UseAdminPackagesInfiniteResult {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isError } =
     useInfiniteQuery({
+      enabled: options?.enabled ?? true,
       queryKey: ['/api/admin/packages/infinite', params],
       queryFn: ({ pageParam, signal }) =>
         adminPackagesControllerFindAllV1({ ...params, page: pageParam as number }, signal),
