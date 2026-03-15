@@ -195,6 +195,8 @@ Generated output lives in `core/api/generated/`. Never edit these files manually
 - Redirects to `/packages` on success
 - Error handling for invalid credentials
 
+![Login](docs/login.png)
+
 ### Wellness Packages (`/packages`) — protected
 
 - **Table**: paginated list with columns for name, description, price, duration
@@ -204,6 +206,26 @@ Generated output lives in `core/api/generated/`. Never edit these files manually
 - **Edit**: modal form pre-filled with existing package data
 - **Delete**: confirmation dialog before deletion
 - All mutations show toast notifications on success and failure
+
+**Package list**
+
+![Package List](docs/list.png)
+
+**Search**
+
+![Search](docs/search.png)
+
+**Create package**
+
+![Create Package](docs/create.png)
+
+**Edit package**
+
+![Edit Package](docs/edit.png)
+
+**Delete confirmation**
+
+![Delete Confirmation](docs/delete.png)
 
 ---
 
