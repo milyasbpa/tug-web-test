@@ -61,7 +61,7 @@ export default async function LocaleLayout({
               <AuthHydrator />
               <NumberInputGuard />
               <main id="main-content">{children}</main>
-              <Toaster richColors position="top-right" />
+              <Toaster richColors position="top-center" />
             </QueryProvider>
           </NextIntlClientProvider>
         </ThemeProvider>

@@ -26,8 +26,8 @@ export function ProtectedNavbar() {
   }
 
   return (
-    <header className="bg-background border-b">
-      <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+    <header className="bg-background sticky top-0 right-0 left-0 z-20 border-b">
+      <div className="mx-auto flex h-14 items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Navigation links */}
         <nav className="flex items-center gap-6">
           <Link
