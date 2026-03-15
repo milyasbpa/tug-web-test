@@ -1,8 +1,9 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Loader2 } from 'lucide-react';
+import { Eye, EyeOff, Loader2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { Button } from '@/core/components/button';
@@ -15,6 +16,8 @@ import { loginSchema, type LoginFormValues } from './form.login.schema';
 export function FormLogin() {
   const t = useTranslations('login');
   const { mutate, isPending } = useLogin();
+
+  const [showPassword, setShowPassword] = useState(false);
 
   const { control, handleSubmit } = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -59,12 +62,23 @@ export function FormLogin() {
             <Input
               {...field}
               id="password"
-              type="password"
+              type={showPassword ? 'text' : 'password'}
               placeholder={t('password.placeholder')}
               autoComplete="current-password"
               aria-invalid={!!fieldState.error}
               aria-describedby={fieldState.error ? 'password-error' : undefined}
               disabled={isPending}
+              rightElement={
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
+                  className="text-muted-foreground hover:text-foreground cursor-pointer transition-colors"
+                  tabIndex={-1}
+                >
+                  {showPassword ? <EyeOff /> : <Eye />}
+                </button>
+              }
             />
           )}
         />

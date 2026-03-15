@@ -53,7 +53,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
           {...props}
         />
         {rightElement && (
-          <span className="text-muted-foreground pointer-events-none absolute right-4 flex shrink-0 items-center [&_svg]:size-4">
+          <span className="text-muted-foreground absolute right-4 flex shrink-0 items-center [&_svg]:size-4">
             {rightElement}
           </span>
         )}
