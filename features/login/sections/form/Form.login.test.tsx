@@ -34,7 +34,7 @@ describe('FormLogin', () => {
 
     it('renders password input', () => {
       renderFormLogin();
-      expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
+      expect(screen.getByLabelText('Password')).toBeInTheDocument();
     });
 
     it('renders submit button', () => {
@@ -49,7 +49,7 @@ describe('FormLogin', () => {
 
     it('password input has type="password"', () => {
       renderFormLogin();
-      expect(screen.getByLabelText(/password/i)).toHaveAttribute('type', 'password');
+      expect(screen.getByLabelText('Password')).toHaveAttribute('type', 'password');
     });
   });
 
@@ -69,7 +69,7 @@ describe('FormLogin', () => {
       const user = userEvent.setup();
 
       await user.type(screen.getByRole('textbox', { name: /email/i }), 'user@example.com');
-      await user.type(screen.getByLabelText(/password/i), 'short');
+      await user.type(screen.getByLabelText('Password'), 'short');
       await user.click(screen.getByRole('button', { name: /sign in/i }));
 
       expect(await screen.findByText('Password must be at least 8 characters')).toBeInTheDocument();
@@ -102,7 +102,7 @@ describe('FormLogin', () => {
       const user = userEvent.setup();
 
       await user.type(screen.getByRole('textbox', { name: /email/i }), 'user@example.com');
-      await user.type(screen.getByLabelText(/password/i), 'password123');
+      await user.type(screen.getByLabelText('Password'), 'password123');
       await user.click(screen.getByRole('button', { name: /sign in/i }));
 
       expect(mockMutate).toHaveBeenCalledOnce();
