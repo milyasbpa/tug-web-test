@@ -29,6 +29,7 @@ export function DeleteDialogPackages() {
       cancelLabel={t('delete.cancel')}
       onConfirm={handleConfirm}
       onCancel={closeDeleteDialog}
+      confirmVariant="destructive"
       confirmDisabled={isPending}
     />
   );

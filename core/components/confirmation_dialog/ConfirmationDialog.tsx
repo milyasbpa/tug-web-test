@@ -3,7 +3,7 @@
 import { Dialog as DialogPrimitive } from 'radix-ui';
 import * as React from 'react';
 
-import { Button } from '@/core/components/button/Button';
+import { Button, type ButtonProps } from '@/core/components/button/Button';
 import { cn } from '@/core/lib/utils';
 
 export interface ConfirmationDialogProps {
@@ -21,6 +21,8 @@ export interface ConfirmationDialogProps {
   onConfirm?: () => void;
   /** Disables the confirm button (e.g. while a mutation is in-flight) */
   confirmDisabled?: boolean;
+  /** Variant for the confirm button. Defaults to "primary" */
+  confirmVariant?: ButtonProps['variant'];
   className?: string;
 }
 
@@ -33,6 +35,7 @@ export function ConfirmationDialog({
   onCancel,
   onConfirm,
   confirmDisabled = false,
+  confirmVariant = 'primary',
   className,
 }: ConfirmationDialogProps) {
   function handleCancel() {
@@ -73,7 +76,7 @@ export function ConfirmationDialog({
               {cancelLabel}
             </Button>
             <Button
-              variant="primary"
+              variant={confirmVariant}
               size="lg"
               className="flex-1 rounded-xl"
               onClick={handleConfirm}
