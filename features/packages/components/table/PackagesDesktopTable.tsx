@@ -1,17 +1,17 @@
 'use client';
 
 import { flexRender, type HeaderGroup, type Row } from '@tanstack/react-table';
-import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp, ChevronsUpDown } from 'lucide-react';
+import { ChevronDown, ChevronUp, ChevronsUpDown } from 'lucide-react';
 
 import type { PackageResponseDto } from '@/core/api/generated/nestjsStarter.schemas';
-import { Button } from '@/core/components/button';
 import { EmptyState } from '@/core/components/empty_state';
+import { Pagination } from '@/core/components/pagination';
+import { PaginationInfo } from '@/core/components/pagination_info';
+import { RowsPerPage } from '@/core/components/rows_per_page';
 import { Skeleton } from '@/core/components/skeleton';
-
-const LIMIT_OPTIONS = [10, 25, 50] as const;
+import { LIMIT_OPTIONS } from '@/core/lib/constants';
 
 interface PaginationLabels {
-  showingText: string;
   rowsPerPage: string;
   prev: string;
   next: string;
@@ -48,6 +48,13 @@ export function PackagesDesktopTable({
   emptyDescription,
   pagination,
 }: Props) {
+  const from = pagination
+    ? pagination.total === 0
+      ? 0
+      : (pagination.page - 1) * pagination.limit + 1
+    : 0;
+  const to = pagination ? Math.min(pagination.page * pagination.limit, pagination.total) : 0;
+
   return (
     <div className="hidden md:block">
       <div className="rounded-md border">
@@ -122,51 +129,25 @@ export function PackagesDesktopTable({
       {pagination && (
         <div className="mt-3 flex flex-wrap items-center justify-between gap-3 text-sm">
           {/* Rows per page */}
-          <div className="text-muted-foreground flex items-center gap-2">
-            <span>{pagination.labels.rowsPerPage}</span>
-            <select
-              className="border-input bg-background rounded-md border px-2 py-1 text-sm"
-              value={pagination.limit}
-              onChange={(e) => pagination.onLimitChange(Number(e.target.value))}
-              aria-label={pagination.labels.rowsPerPage}
-            >
-              {LIMIT_OPTIONS.map((opt) => (
-                <option key={opt} value={opt}>
-                  {opt}
-                </option>
-              ))}
-            </select>
-          </div>
+          <RowsPerPage
+            value={pagination.limit}
+            options={LIMIT_OPTIONS}
+            onChange={pagination.onLimitChange}
+            label={pagination.labels.rowsPerPage}
+            disabled={isLoading}
+          />
 
           {/* Showing X–Y of Z */}
-          <span className="text-muted-foreground">{pagination.labels.showingText}</span>
+          <PaginationInfo from={from} to={to} total={pagination.total} />
 
-          {/* Prev / Next */}
-          <div className="flex items-center gap-1">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => pagination.onPageChange(pagination.page - 1)}
-              disabled={pagination.page <= 1 || isLoading}
-              aria-label={pagination.labels.prev}
-            >
-              <ChevronLeft className="size-4" />
-              <span className="sr-only">{pagination.labels.prev}</span>
-            </Button>
-            <span className="text-muted-foreground px-1">
-              {pagination.page} / {pagination.totalPages}
-            </span>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => pagination.onPageChange(pagination.page + 1)}
-              disabled={pagination.page >= pagination.totalPages || isLoading}
-              aria-label={pagination.labels.next}
-            >
-              <ChevronRight className="size-4" />
-              <span className="sr-only">{pagination.labels.next}</span>
-            </Button>
-          </div>
+          {/* Page number pagination */}
+          <Pagination
+            page={pagination.page}
+            totalPages={pagination.totalPages}
+            onPageChange={pagination.onPageChange}
+            isLoading={isLoading}
+            labels={{ prev: pagination.labels.prev, next: pagination.labels.next }}
+          />
         </div>
       )}
     </div>

@@ -3,5 +3,8 @@ export * from './confirmation_dialog';
 export * from './empty_state';
 export * from './form_field';
 export * from './input';
+export * from './pagination';
+export * from './pagination_info';
 export * from './providers';
+export * from './rows_per_page';
 export * from './skeleton';

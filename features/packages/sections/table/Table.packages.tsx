@@ -10,9 +10,10 @@ import { Plus } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 
-import type { AdminPackagesControllerFindAllParams } from '@/core/api/generated/nestjsStarter.schemas';
+import type { AdminPackagesControllerFindAllV1Params } from '@/core/api/generated/nestjsStarter.schemas';
 import { Button } from '@/core/components/button';
 import { Input } from '@/core/components/input';
+import { DEFAULT_LIMIT } from '@/core/lib/constants';
 import { PackagesMobileCards } from '@/features/packages/components/cards';
 import { PackagesDesktopTable } from '@/features/packages/components/table';
 import { useAdminPackages } from '@/features/packages/react-query/use-admin-packages';
@@ -20,8 +21,8 @@ import { useAdminPackagesInfinite } from '@/features/packages/react-query/use-ad
 import { usePackagesColumns } from '@/features/packages/react-table/use-packages-columns';
 import { usePackagesStore } from '@/features/packages/store/packages.store';
 
-type SortByValue = NonNullable<AdminPackagesControllerFindAllParams['sortBy']>;
-type SortOrderValue = NonNullable<AdminPackagesControllerFindAllParams['sortOrder']>;
+type SortByValue = NonNullable<AdminPackagesControllerFindAllV1Params['sortBy']>;
+type SortOrderValue = NonNullable<AdminPackagesControllerFindAllV1Params['sortOrder']>;
 
 const SKELETON_ROWS = 5;
 const DEFAULT_SORTING: SortingState = [{ id: 'createdAt', desc: true }];
@@ -35,7 +36,7 @@ export function TablePackages() {
 
   // ── Server-side params ──────────────────────────────────────────────────────
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
+  const [limit, setLimit] = useState<number>(DEFAULT_LIMIT);
   const [search, setSearch] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
   const [sorting, setSorting] = useState<SortingState>(DEFAULT_SORTING);
@@ -54,7 +55,7 @@ export function TablePackages() {
   const sortOrder: SortOrderValue = sorting[0]?.desc ? 'desc' : 'asc';
 
   // Common filter/sort params shared between pagination (desktop) and infinite (mobile) queries
-  const filterParams: AdminPackagesControllerFindAllParams = {
+  const filterParams: AdminPackagesControllerFindAllV1Params = {
     limit,
     ...(debouncedSearch ? { search: debouncedSearch } : {}),
     ...(sortBy ? { sortBy } : {}),
@@ -73,11 +74,11 @@ export function TablePackages() {
   } = useAdminPackagesInfinite(filterParams);
 
   // ── Sort handler ────────────────────────────────────────────────────────────
-  // Prevent the "no sort" state by reverting to previous sort if the updater clears it
+  // When TanStack clears sorting (3rd click), reset to DEFAULT_SORTING instead of staying stuck
   const handleSortingChange = (updater: Updater<SortingState>) => {
     setSorting((prev) => {
       const next = typeof updater === 'function' ? updater(prev) : updater;
-      return next.length > 0 ? next : prev;
+      return next.length > 0 ? next : DEFAULT_SORTING;
     });
     setPage(1);
   };
@@ -99,8 +100,6 @@ export function TablePackages() {
   // ── Pagination display ──────────────────────────────────────────────────────
   const total = meta?.total ?? 0;
   const totalPages = meta?.totalPages ?? 1;
-  const from = total === 0 ? 0 : (page - 1) * limit + 1;
-  const to = Math.min(page * limit, total);
 
   return (
     <div className="space-y-4">
@@ -139,7 +138,6 @@ export function TablePackages() {
             setPage(1);
           },
           labels: {
-            showingText: t('pagination.showing', { from, to, total }),
             rowsPerPage: t('pagination.rowsPerPage'),
             prev: t('pagination.prev'),
             next: t('pagination.next'),

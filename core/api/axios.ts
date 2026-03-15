@@ -34,6 +34,7 @@ if (process.env.NODE_ENV === 'development') {
       return response;
     },
     (error: AxiosError) => {
+      if (axios.isCancel(error)) return Promise.reject(error);
       console.error(`[API] Error ${error.response?.status} ${error.config?.url}`, error.message);
       return Promise.reject(error);
     },
